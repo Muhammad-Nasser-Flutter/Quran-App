@@ -118,6 +118,8 @@ class Text12Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+
     );
   }
 }
@@ -236,6 +238,8 @@ class Text14Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+
     );
   }
 }
@@ -335,6 +339,8 @@ class Text16Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+
     );
   }
 }
@@ -419,6 +425,7 @@ class Text18Ar extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.amiri(
+
         fontSize: size ?? 18.sp,
         fontWeight: weight ?? FontWeight.w500,
         color: textColor ??AppColors.bigTextColor,
@@ -432,6 +439,7 @@ class Text18Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
     );
   }
 }
@@ -529,6 +537,8 @@ class Text20Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+
     );
   }
 }
@@ -626,6 +636,8 @@ class Text22Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+
     );
   }
 }
@@ -723,6 +735,8 @@ class Text24Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+
     );
   }
 }
@@ -820,6 +834,8 @@ class Text26Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+
     );
   }
 }
@@ -917,6 +933,8 @@ class Text28Ar extends StatelessWidget {
       textAlign: alignment,
       overflow: overFlow,
       maxLines: maxLines,
+      textDirection: TextDirection.rtl,
+
     );
   }
 }

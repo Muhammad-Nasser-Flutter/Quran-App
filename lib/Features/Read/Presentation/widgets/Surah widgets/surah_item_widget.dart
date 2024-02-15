@@ -30,10 +30,11 @@ class SurahItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         if(fromRead){
-          context.pushNamed(Routes.quranScreen,arguments: 1);
+          context.pushNamed(Routes.quranScreen,arguments: index+1);
           // go to the surah's page where u can read the surah from the quran
         }else{
           // play the surah and go to the surah's page
+          context.pushNamed(Routes.listeningScreen,arguments: index+1);
         }
       },
       child: Container(
@@ -47,8 +48,9 @@ class SurahItemWidget extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   Assets.surahIcon,
+                  width: 40.r,
                 ),
-                Text16(
+                Text14(
                   text: "${index+1}",
                   textColor: Colors.black,
                 )
@@ -64,7 +66,7 @@ class SurahItemWidget extends StatelessWidget {
                   text: getSurahName(index+1),
                 ),
                 Text12(
-                  text: "MECCAN - ${getVerseCount(index+1)} VERSES",
+                  text: "${getPlaceOfRevelation(index+1)} - ${getVerseCount(index+1)} VERSES",
                 ),
               ],
             ),

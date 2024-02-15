@@ -1,3 +1,4 @@
+import 'package:Quran/Features/Quran/Presentation/quran_listen_screen.dart';
 import 'package:Quran/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,11 +30,18 @@ class AppRouter {
         );
       case Routes.quranScreen:
         return PageTransition(
-
           child: BlocProvider(
-            create: (context) => QuranCubit()..getQuranData(settings.arguments as int),
+            create: (context) =>
+                QuranCubit()..getQuranData(settings.arguments as int),
             child: const QuranReadScreen(),
           ),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+      case Routes.listeningScreen:
+        return PageTransition(
+          child: QuranListenScreen(surahIndex: settings.arguments as int,),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
           settings: settings,
