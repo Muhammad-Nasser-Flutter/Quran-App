@@ -11,10 +11,6 @@ class SurahWidget extends StatelessWidget {
     return ListView.separated(
       itemBuilder: (context, index) {
         return SurahItemWidget(
-          englishName: "Al-Fatiha",
-          arabicName: "الفاتحة",
-          number: "1",
-          versesNumber: "7",
           fromRead: fromRead,
           index:index,
         );

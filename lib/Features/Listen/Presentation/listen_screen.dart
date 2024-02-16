@@ -58,7 +58,7 @@ class ListenScreen extends StatelessWidget {
                   children: [
                     Container(
                       constraints: BoxConstraints(
-                        maxWidth: MediaQuery.sizeOf(context).width
+                          maxWidth: MediaQuery.sizeOf(context).width
                       ),
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       decoration: BoxDecoration(
@@ -128,8 +128,8 @@ class ListenScreen extends StatelessWidget {
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.r),
-                                    color: Colors.black.withOpacity(0.6)
+                                      borderRadius: BorderRadius.circular(20.r),
+                                      color: Colors.black.withOpacity(0.6)
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,

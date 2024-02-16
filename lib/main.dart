@@ -1,3 +1,5 @@
+import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
+import 'package:Quran/Features/Quran/Bloc/quran_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -35,14 +37,20 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      child: MaterialApp(
-        title: 'Quran',
-        debugShowCheckedModeBanner: false,
-        theme: lightTheme,
-        themeMode: ThemeMode.light,
-        initialRoute: Routes.homeScreen,
-        onGenerateRoute: appRouter.generateRoute,
-        builder: EasyLoading.init(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => ListenCubit()),
+          BlocProvider(create: (context) => QuranCubit()..getQuranSurahs()),
+        ],
+        child: MaterialApp(
+          title: 'Quran',
+          debugShowCheckedModeBanner: false,
+          theme: lightTheme,
+          themeMode: ThemeMode.light,
+          initialRoute: Routes.homeScreen,
+          onGenerateRoute: appRouter.generateRoute,
+          builder: EasyLoading.init(),
+        ),
       ),
     );
   }
