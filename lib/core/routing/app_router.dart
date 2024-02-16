@@ -31,8 +31,7 @@ class AppRouter {
       case Routes.quranScreen:
         return PageTransition(
           child: BlocProvider(
-            create: (context) =>
-                QuranCubit()..getQuranData(settings.arguments as int),
+            create: (context) => QuranCubit()..getQuranData(settings.arguments as int),
             child: const QuranReadScreen(),
           ),
           type: PageTransitionType.fade,

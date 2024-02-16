@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quran/quran.dart';
 
 import '../../../core/theming/assets.dart';
 import '../../../core/widgets/custom_texts.dart';
@@ -47,16 +48,12 @@ class QuranReadScreen extends StatelessWidget {
                                 quranCubit.quran?.data?.ayahs?[0] !=null?
                                 Text22Ar(
                                   text: "${quranCubit.quran?.data?.ayahs?[0].surah?.name}",
-                                ):SizedBox(),
+                                ):const SizedBox(),
                               ],
                             ),
                             SizedBox(
                               height: 10.h,
                             ),
-                            // SvgPicture.asset(
-                            //   Assets.basmala,
-                            //   height: 50.r,
-                            // ),
                           ],
                         ),
                       ),
@@ -76,14 +73,21 @@ class QuranReadScreen extends StatelessWidget {
                               text: TextSpan(
                                 text: "",
                                 children: <TextSpan>[
-
                                   for (int i = 0; i < quranCubit.quran!.data!.ayahs!.length; i++) ...{
-
                                     TextSpan(
                                       text:
-                                      "${quranCubit.quran?.data?.ayahs?[i].text} (${quranCubit.quran?.data?.ayahs?[i].numberInSurah}) ",
+                                      " ${quranCubit.quran?.data?.ayahs?[i].text} ",
                                       style: GoogleFonts.amiri().copyWith(
-                                        fontSize: 16.sp,
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black.withOpacity(0.7),
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                      getVerseEndSymbol(i+1,arabicNumeral: false),
+                                      style: GoogleFonts.amiri().copyWith(
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.black.withOpacity(0.7),
                                       ),
