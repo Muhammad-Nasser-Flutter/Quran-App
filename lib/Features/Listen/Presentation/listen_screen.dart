@@ -1,15 +1,29 @@
+import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
+import 'package:Quran/Features/Listen/Bloc/listen_states.dart';
+import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import '../../../core/theming/assets.dart';
 import '../../../core/theming/colors.dart';
 import '../../../core/widgets/custom_texts.dart';
 import '../../../core/widgets/icon_widget.dart';
 import '../../Read/Presentation/widgets/Surah widgets/surah_widget.dart';
 
-class ListenScreen extends StatelessWidget {
+class ListenScreen extends StatefulWidget {
   const ListenScreen({super.key});
+
+  @override
+  State<ListenScreen> createState() => _ListenScreenState();
+}
+
+class _ListenScreenState extends State<ListenScreen> {
+  final int playingSurahNumber = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,172 +53,194 @@ class ListenScreen extends StatelessWidget {
           horizontal: 15.r,
           vertical: 5.r,
         ),
-        child: DefaultTabController(
-          length: 4,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text20(
-                text: "Asslamualaikum",
-                textColor: Colors.grey,
-                weight: FontWeight.w400,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Center(
-                child: Stack(
-                  children: [
-                    Container(
-                      constraints: BoxConstraints(
-                          maxWidth: MediaQuery.sizeOf(context).width
-                      ),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r)),
-                      child: Image.asset(
-                        Assets.listenTopPoster,
-                        fit: BoxFit.cover,
-                        width: double.maxFinite,
-                        height: 200,
-                      ),
-                    ),
-                    Positioned(
-                      top: 15.r,
-                      left: 20.r,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                Assets.lastReadIcon,
-                                width: 25.r,
-                              ),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Text16(
-                                text: "Last Listen",
-                                textColor: Colors.white,
-                              ),
-
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Text20(
-                            text: "Al-Fatiha",
-                            textColor: Colors.white,
-                          ),
-                          Text16(
-                            text: "Mushary Al-Afasy",
-                            textColor: Colors.white,
-                          ),
-                          SizedBox(height: 10.h,),
-                          SizedBox(
-                            width: 180.w,
-                            child: Column(
-                              children: [
-                                ProgressBar(
-                                  timeLabelLocation: TimeLabelLocation.below,
-                                  barHeight: 3,
-                                  baseBarColor: const Color(0xFF555b6a),
-                                  bufferedBarColor: Colors.grey,
-                                  progressBarColor: Colors.white,
-                                  thumbColor: Colors.white,
-                                  thumbGlowRadius: 20,
-                                  thumbRadius: 7,
-                                  progress: const Duration(
-                                    seconds: 20,
-                                  ),
-                                  total: const Duration(seconds: 100),
-                                  onSeek: (Duration d) {
-                                    // trackCubit.changeVolume(double.parse(
-                                    //     (d.inSeconds / 100).toString()));
-                                  },
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      color: Colors.black.withOpacity(0.6)
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconWidget(
-                                        onPressed: () {
-                                          // trackCubit.seekToPrevTrack();
-                                        },
-                                        iconAsset: Assets.prevIcon,
-                                        size: 25.r,
-                                        color: Colors.white,
-                                        padding: 5,
-
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      IconWidget(
-                                        onPressed: () {
-                                          // if (!positionData!.playerState.playing) {
-                                          //   trackCubit.audioPlayer!.play();
-                                          // } else if (positionData
-                                          //     .playerState.processingState !=
-                                          //     ProcessingState.completed) {
-                                          //   trackCubit.audioPlayer!.pause();
-                                          // }
-                                        },
-                                        iconAsset:  Assets.playIcon,
-                                        size: 30.r,
-                                        color: Colors.white,
-                                        padding: 5,
-
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      ),
-                                      IconWidget(
-                                        onPressed: () {
-                                          // trackCubit.seekToNextTrack();
-                                        },
-                                        iconAsset: Assets.nextIcon,
-                                        size: 25.r,
-                                        padding: 5,
-                                        color: Colors.white,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      bottom: 0,
-                      right: 10.r,
-                      child: Image.asset(
-                        Assets.headphonesImage,
-                        width: 140,
-                      ),
-                    ),
-                  ],
+        child: BlocBuilder<ListenCubit, ListenStates>(
+          builder: (context, state) {
+            var listenCubit = ListenCubit.get(context);
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text20(
+                  text: "Asslamualaikum",
+                  textColor: Colors.grey,
+                  weight: FontWeight.w400,
                 ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              const Expanded(
-                child: SurahWidget(fromRead: false,),
-              )
-            ],
-          ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.sizeOf(context).width),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      image: const DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(
+                            Assets.listenTopPoster,
+                          ))),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(end: 10.0),
+                          child:listenCubit.audioPlayer ==null? const SizedBox():StreamBuilder<PositionData>(
+                              stream: listenCubit.positionDataStream,
+                              builder: (context, snapshot) {
+                                final positionData = snapshot.data;
+                                final mediaItem = positionData
+                                    ?.sequenceState?.currentSource?.tag;
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          Assets.lastReadIcon,
+                                          width: 25.r,
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        ),
+                                        Text16(
+                                          text: "Playing Now",
+                                          textColor: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Text20(
+                                      text: mediaItem?.title??"",
+                                      textColor: Colors.white,
+                                    ),
+                                    Text16(
+                                      text: mediaItem?.artist??"",
+                                      textColor: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    Column(
+                                      children: [
+                                        ProgressBar(
+                                          timeLabelLocation:
+                                              TimeLabelLocation.below,
+                                          timeLabelTextStyle:
+                                              GoogleFonts.poppins(
+                                                  fontSize: 13.sp,
+                                                  color: Colors.black54),
+                                          barHeight: 3,
+                                          baseBarColor: const Color(0xFF555b6a),
+                                          bufferedBarColor: Colors.grey,
+                                          progressBarColor: Colors.white,
+                                          thumbColor: Colors.white,
+                                          thumbGlowRadius: 20,
+                                          thumbRadius: 7,
+                                          progress: positionData?.position ??
+                                              Duration.zero,
+                                          buffered:
+                                              positionData?.bufferedPosition ??
+                                                  Duration.zero,
+                                          total: positionData?.duration ??
+                                              Duration.zero,
+                                          onSeek: listenCubit.audioPlayer!.seek,
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r),
+                                              color: Colors.white
+                                                  .withOpacity(0.6)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              IconWidget(
+                                                onPressed: () {
+                                                  listenCubit.seekToPrevSurah();
+                                                },
+                                                iconAsset: Assets.prevIcon,
+                                                size: 25.r,
+                                                color: Colors.black54,
+                                                padding: 5,
+                                              ),
+                                              SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              IconWidget(
+                                                onPressed: () {
+                                                  if (!positionData!
+                                                      .playerState.playing) {
+                                                    listenCubit.audioPlayer!
+                                                        .play();
+                                                  } else if (positionData
+                                                          .playerState
+                                                          .processingState !=
+                                                      ProcessingState
+                                                          .completed) {
+                                                    listenCubit.audioPlayer!
+                                                        .pause();
+                                                  }
+                                                },
+                                                iconAsset: positionData
+                                                            ?.playerState
+                                                            .playing ==
+                                                        null
+                                                    ? Assets.playIcon
+                                                    : !positionData!
+                                                            .playerState.playing
+                                                        ? Assets.playIcon
+                                                        : Assets.pauseIcon,
+                                                size: 30.r,
+                                                color: Colors.black54,
+                                                padding: 5,
+                                              ),
+                                              SizedBox(
+                                                width: 10.w,
+                                              ),
+                                              IconWidget(
+                                                onPressed: () {
+                                                  listenCubit.seekToNextSurah();
+                                                },
+                                                iconAsset: Assets.nextIcon,
+                                                size: 25.r,
+                                                padding: 5,
+                                                color: Colors.black54,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ),
+                      ),
+                      Image.asset(
+                        Assets.headphonesImage,
+                        width: 120,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Expanded(
+                  child: SurahWidget(
+                    fromRead: false,
+                    playingSurahNumber: playingSurahNumber,
+                  ),
+                )
+              ],
+            );
+          },
         ),
       ),
     );

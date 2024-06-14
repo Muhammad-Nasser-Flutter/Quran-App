@@ -41,7 +41,7 @@ dependencies:
   fluttertoast: ^8.2.4
   page_transition: ^2.1.0
   shared_preferences: ^2.2.2
-  just_audio: ^0.9.36
+  just_audio: ^0.9.38
   audio_video_progress_bar: ^2.0.1
   just_audio_background: ^0.0.1-beta.11
   shimmer: ^3.0.0

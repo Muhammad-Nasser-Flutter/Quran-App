@@ -4,7 +4,8 @@ import '../../../../../core/widgets/separator.dart';
 
 class SurahWidget extends StatelessWidget {
   final bool fromRead;
-  const SurahWidget({super.key, required this.fromRead});
+  final int playingSurahNumber;
+  const SurahWidget({super.key, required this.fromRead, required this.playingSurahNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,7 @@ class SurahWidget extends StatelessWidget {
         return SurahItemWidget(
           fromRead: fromRead,
           index:index,
+          playingSurahNumber: playingSurahNumber,
         );
       },
       separatorBuilder: (context, index) {

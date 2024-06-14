@@ -1,7 +1,7 @@
 import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
 import 'package:Quran/Features/Listen/Bloc/listen_states.dart';
-import 'package:Quran/Features/Quran/Bloc/quran_cubit.dart';
-import 'package:Quran/Features/Quran/Bloc/quran_states.dart';
+import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
+import 'package:Quran/Features/Quran/Bloc/read_states.dart';
 import 'package:Quran/Features/Quran/models/surah_model.dart';
 import 'package:Quran/core/helpers/extensions.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,9 @@ class SurahItemWidget extends StatelessWidget {
     super.key,
     required this.fromRead,
     required this.index,
+    required this.playingSurahNumber,
   });
+  final int playingSurahNumber;
   final bool fromRead;
   final int index;
 
@@ -29,26 +31,21 @@ class SurahItemWidget extends StatelessWidget {
     return BlocBuilder<ListenCubit, ListenStates>(
       builder: (context, state) {
         var listenCubit = ListenCubit.get(context);
-        return BlocBuilder<QuranCubit,QuranStates>(
-          builder:(context,state){
-            var quranCubit  = QuranCubit.get(context);
+        return BlocBuilder<ReadCubit, ReadStates>(
+          builder: (context, state) {
+            var quranCubit = ReadCubit.get(context);
             return GestureDetector(
               onTap: () {
                 if (fromRead) {
-                  context.pushNamed(Routes.quranScreen, arguments: index + 1);
+                  context.pushNamed(Routes.quranReadScreen,
+                      arguments: index + 1);
                   // go to the surah's page where u can read the surah from the quran
                 } else {
                   // print(quranCubit.surahs[index]);
                   // play the surah and go to the surah's page
                   listenCubit.setCurrentSurah(
-                    // trackImgUrl: trackImgUrl,
-                    // trackUrl: trackUrl,
-                    // title: title,
-                    // author: author,
-                    surahModel: quranCubit.surahs[index],
                     surahIndex: index,
                   );
-                  context.pushNamed(Routes.listeningScreen, arguments: index + 1);
                 }
               },
               child: Container(
@@ -76,12 +73,25 @@ class SurahItemWidget extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text18(
-                          text: getSurahName(index + 1),
+                        Row(
+                          children: [
+                            Text18(
+                              text: getSurahName(index + 1),
+                            ),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            if (playingSurahNumber == index + 1)
+                              Text14(
+                                text: getSurahNameArabic(index + 1),
+                                textColor: AppColors.primaryColor,
+                                weight: FontWeight.w700,
+                              ),
+                          ],
                         ),
                         Text12(
                           text:
-                          "${getPlaceOfRevelation(index + 1)} - ${getVerseCount(index + 1)} VERSES",
+                              "${getPlaceOfRevelation(index + 1)} - ${getVerseCount(index + 1)} VERSES",
                         ),
                       ],
                     ),

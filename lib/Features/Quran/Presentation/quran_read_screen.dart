@@ -1,112 +1,78 @@
+import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
+import 'package:Quran/Features/Quran/Presentation/widgets/ayah_listen_widget.dart';
+import 'package:Quran/Features/Quran/Presentation/widgets/quran_listen_top_widget.dart';
+import 'package:Quran/core/theming/assets.dart';
+import 'package:Quran/core/widgets/custom_texts.dart';
+import 'package:Quran/core/widgets/icon_widget.dart';
+import 'package:Quran/core/widgets/separator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:quran/quran.dart';
-
-import '../../../core/theming/assets.dart';
-import '../../../core/widgets/custom_texts.dart';
-import '../Bloc/quran_cubit.dart';
-import '../Bloc/quran_states.dart';
-
+import '../../../core/widgets/back.dart';
+import '../Bloc/read_states.dart';
 
 class QuranReadScreen extends StatelessWidget {
-  const QuranReadScreen({super.key});
+  const QuranReadScreen({super.key, required this.surahNumber});
+  final int surahNumber;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFf6f8f7),
-      body: BlocBuilder<QuranCubit,QuranStates>(
-        builder:(context,state){
-          var quranCubit = QuranCubit.get(context);
-          return PageView(
-            reverse: true,
-            scrollDirection: Axis.horizontal,
-            children: [
-              SafeArea(
+      appBar: AppBar(
+        leading: const Back(),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text20(
+          text: getSurahName(surahNumber),
+          weight: FontWeight.w600,
+        ),
+        actions: [
+          IconWidget(
+            iconAsset: Assets.searchIcon,
+          ),
+        ],
+      ),
+      body: BlocBuilder<ReadCubit, ReadStates>(
+        builder: (context, state) {
+          return PopScope(
+            onPopInvoked: (b) {
+              ReadCubit.get(context).removePlayer();
+            },
+            child: SafeArea(
+              child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  padding: EdgeInsets.symmetric(horizontal: 25.r),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
                         height: 10.h,
                       ),
-                      Center(
-                        child: Column(
-                          children: [
-                            Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Image.asset(
-                                  Assets.surahBorderImage,
-                                  height: 60.h,
-                                  fit: BoxFit.fill,
-                                  width: MediaQuery.sizeOf(context).width * 0.8,
-                                ),
-                                quranCubit.quran?.data?.ayahs?[0] !=null?
-                                Text22Ar(
-                                  text: "${quranCubit.quran?.data?.ayahs?[0].surah?.name}",
-                                ):const SizedBox(),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                          ],
-                        ),
-                      ),
+                      QuranListenTopWidget(index: surahNumber),
                       SizedBox(
-                        height: 10.h,
+                        height: 20.h,
                       ),
-
-                      quranCubit.quran !=null?
-                      Expanded(
-                        child: ListView(
-                          children: [
-                            SizedBox(
-                              height: 10.h,
-                            ),
-                            RichText(
-                              textDirection: TextDirection.rtl,
-                              text: TextSpan(
-                                text: "",
-                                children: <TextSpan>[
-                                  for (int i = 0; i < quranCubit.quran!.data!.ayahs!.length; i++) ...{
-                                    TextSpan(
-                                      text:
-                                      " ${quranCubit.quran?.data?.ayahs?[i].text} ",
-                                      style: GoogleFonts.amiri().copyWith(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black.withOpacity(0.7),
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text:
-                                      getVerseEndSymbol(i+1,arabicNumeral: false),
-                                      style: GoogleFonts.amiri().copyWith(
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black.withOpacity(0.7),
-                                      ),
-                                    ),
-                                  },
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ):
-                      SizedBox(),
+                      ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return AyahReadWidget(ayahNumber: index+1, surahNumber: surahNumber);
+                        },
+                        separatorBuilder: (context, index) {
+                          return Separator(
+                            margin: 20.h,
+                          );
+                        },
+                        itemCount: getVerseCount(surahNumber),
+                      ),
                     ],
                   ),
                 ),
               ),
-            ],
+            ),
           );
-        },
+        }
       ),
     );
   }

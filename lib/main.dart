@@ -1,5 +1,5 @@
 import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
-import 'package:Quran/Features/Quran/Bloc/quran_cubit.dart';
+import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => ListenCubit()),
-          BlocProvider(create: (context) => QuranCubit()..getQuranSurahs()),
+          BlocProvider(create: (context) => ReadCubit()),
         ],
         child: MaterialApp(
           title: 'Quran',

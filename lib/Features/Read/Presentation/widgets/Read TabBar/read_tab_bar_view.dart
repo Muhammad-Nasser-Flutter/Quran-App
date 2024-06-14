@@ -1,3 +1,5 @@
+import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
+import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:flutter/material.dart';
 import '../Hizb Widgets/hizb_widget.dart';
 import '../Juz Widgets/juz_widget.dart';
@@ -9,10 +11,13 @@ class ReadTabBarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  const Expanded(
+    return const Expanded(
       child: TabBarView(
         children: [
-          SurahWidget(fromRead: true,),
+          SurahWidget(
+            fromRead: true,
+            playingSurahNumber:0,
+          ),
           JuzWidget(),
           PageWidget(),
           HizbWidget(),
