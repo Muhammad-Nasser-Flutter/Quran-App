@@ -1,5 +1,6 @@
 import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
 import 'package:Quran/Features/Listen/Bloc/listen_states.dart';
+import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
 import 'package:Quran/Features/Quran/Bloc/read_states.dart';
 import 'package:Quran/Features/Quran/models/surah_model.dart';
@@ -37,7 +38,7 @@ class SurahItemWidget extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 if (fromRead) {
-                  context.pushNamed(Routes.quranReadScreen,
+                  context.pushNamed(Routes.surahReadScreen,
                       arguments: index + 1);
                   // go to the surah's page where u can read the surah from the quran
                 } else {
@@ -70,32 +71,43 @@ class SurahItemWidget extends StatelessWidget {
                     SizedBox(
                       width: 15.w,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text18(
-                              text: getSurahName(index + 1),
-                            ),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            if (playingSurahNumber == index + 1)
-                              Text14(
-                                text: getSurahNameArabic(index + 1),
-                                textColor: AppColors.primaryColor,
-                                weight: FontWeight.w700,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text18(
+                                text: getSurahName(index + 1),
                               ),
-                          ],
-                        ),
-                        Text12(
-                          text:
-                              "${getPlaceOfRevelation(index + 1)} - ${getVerseCount(index + 1)} VERSES",
-                        ),
-                      ],
+                              SizedBox(
+                                width: 15.w,
+                              ),
+                              if (listenCubit.audioPlayer!=null)
+                                StreamBuilder<PositionData>(
+                                  stream: listenCubit.positionDataStream,
+                                  builder: (context, snapshot) {
+                                    if(snapshot.data?.sequenceState?.currentSource?.tag?.id!=(index+1).toString()){
+                                      return const SizedBox();
+                                    }else{
+                                      return Text14(
+                                        text: "Playing",
+                                        textColor: AppColors.primaryColor,
+                                        weight: FontWeight.w600,
+                                      );
+                                    }
+
+                                  }
+                                ),
+                            ],
+                          ),
+                          Text12(
+                            text:
+                                "${getPlaceOfRevelation(index + 1)} - ${getVerseCount(index + 1)} VERSES",
+                          ),
+                        ],
+                      ),
                     ),
-                    const Spacer(),
                     Text20Ar(
                       text: getSurahNameArabic(index + 1),
                       textColor: AppColors.primaryColor,

@@ -41,13 +41,6 @@ class ReadTabBar extends StatelessWidget {
             style: GoogleFonts.poppins(fontSize: 18.r, fontWeight: FontWeight.w400),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(5.r),
-          child: Text(
-            "Hizb",
-            style: GoogleFonts.poppins(fontSize: 18.r, fontWeight: FontWeight.w400),
-          ),
-        ),
       ],
     );
   }

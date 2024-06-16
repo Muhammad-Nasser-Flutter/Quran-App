@@ -12,45 +12,49 @@ class JuzItemWidget extends StatelessWidget {
     super.key,
     required this.englishName,
     required this.arabicName,
-    required this.number,
+    required this.number, required this.onTap,
   });
   final String englishName;
   final String arabicName;
-  final String number;
+  final int number;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SvgPicture.asset(
-                Assets.surahIcon,
-              ),
-              Text16(
-                text: "1",
-                textColor: Colors.black,
-              )
-            ],
-          ),
-          SizedBox(
-            width: 15.w,
-          ),
-          Text18(
-            text: englishName,
-          ),
-          const Spacer(),
-          Text20Ar(
-            text: arabicName,
-            textColor: AppColors.primaryColor,
-            weight: FontWeight.w700,
-          ),
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SvgPicture.asset(
+                  Assets.surahIcon,
+                ),
+                Text14(
+                  text: number.toString(),
+                  textColor: Colors.black,
+                )
+              ],
+            ),
+            SizedBox(
+              width: 15.w,
+            ),
+            Text18(
+              text: englishName,
+            ),
+            const Spacer(),
+            Text20Ar(
+              text: arabicName,
+              textColor: AppColors.primaryColor,
+              weight: FontWeight.w700,
+            ),
+          ],
+        ),
       ),
     );
   }

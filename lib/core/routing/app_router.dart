@@ -1,4 +1,5 @@
-import 'package:Quran/Features/Quran/Presentation/quran_read_screen.dart';
+import 'package:Quran/Features/Quran/Presentation/juz_read_screen.dart';
+import 'package:Quran/Features/Quran/Presentation/surah_read_screen.dart';
 import 'package:Quran/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,10 +36,19 @@ class AppRouter {
           alignment: Alignment.center,
           settings: settings,
         );
-      case Routes.quranReadScreen:
+      case Routes.surahReadScreen:
         return PageTransition(
-          child: QuranReadScreen(
+          child: SurahReadScreen(
             surahNumber: settings.arguments as int,
+          ),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+case Routes.juzReadScreen:
+        return PageTransition(
+          child: JuzReadScreen(
+            juzData: settings.arguments as Map<String, dynamic>,
           ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
@@ -62,10 +72,7 @@ class AppRouter {
 
   List<Widget> screens = [
     const ReadScreen(),
-    BlocProvider(
-      child: const ListenScreen(),
-      create: (context) => ReadCubit(),
-    ),
+    const ListenScreen(),
     const AthanScreen(),
   ];
 }

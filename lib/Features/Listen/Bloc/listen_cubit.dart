@@ -14,45 +14,83 @@ class ListenCubit extends Cubit<ListenStates> {
   static ListenCubit get(context) => BlocProvider.of(context);
 
   AudioPlayer? audioPlayer;
-  List<AudioSource> surahsToPlay = [];
-  void initHandler(
-      // Ayahs currentAyah,
-      {
-    required SurahModel surahModel,
-    required int ayahIndex,
-  }) async {
-    // to make the chosen track the first item played
-    SurahModel test = SurahModel.fromJson(surahModel.toJson());
-    // we're making a playlist of surahs from the chosen one to the end
-    surahsToPlay = List.generate(
-      // as quran has 114 surahs
-      115 - surahModel.number!,
-      (index) => AudioSource.uri(
-        Uri.parse(
-          getAudioURLBySurah(index + surahModel.number!),
-        ),
-        tag: MediaItem(
-          title: getSurahNameArabic(index + surahModel.number!),
-          artist: "Mushary Al Afasy",
-          // artUri: Uri.parse(element.image.toString()),
-          album: getSurahNameEnglish(index + surahModel.number!),
-          id: (index + surahModel.number!).toString(),
-        ),
-      ),
+  List<AudioSource> allSurahs = [];
+  // void initHandler(
+  //     // Ayahs currentAyah,
+  //     {
+  //   required SurahModel surahModel,
+  //   required int ayahIndex,
+  // }) async {
+  //   // we're making a playlist of surahs from the chosen one to the end
+  //   surahsToPlay = List.generate(
+  //     // as quran has 114 surahs
+  //     115 - surahModel.number!,
+  //     (index) => AudioSource.uri(
+  //       Uri.parse(
+  //         getAudioURLBySurah(index + surahModel.number!),
+  //       ),
+  //       tag: MediaItem(
+  //         title: getSurahNameArabic(index + surahModel.number!),
+  //         artist: "Mushary Al Afasy",
+  //         // artUri: Uri.parse(element.image.toString()),
+  //         album: getSurahNameEnglish(index + surahModel.number!),
+  //         id: (index + surahModel.number!).toString(),
+  //       ),
+  //     ),
+  //   );
+  //
+  //   if(audioPlayer!=null){
+  //     await audioPlayer!.dispose();
+  //   }
+  //   audioPlayer = AudioPlayer()
+  //     ..setAudioSource(
+  //       ConcatenatingAudioSource(children: surahsToPlay),
+  //     )
+  //     ..play()
+  //     ..setLoopMode(LoopMode.off);
+  //   // audioPlayer = AudioPlayer()..setUrl(currentAyah.audio!);
+  //   emit(InitAudioHandlerSuccessState());
+  // }
+  void initializeAllSurahs() {
+    allSurahs = List.generate(
+      114,
+          (index) {
+        int surahNumber = index + 1;
+        return AudioSource.uri(
+          Uri.parse(getAudioURLBySurah(surahNumber)),
+          tag: MediaItem(
+            title: getSurahNameArabic(surahNumber),
+            artist: "Mishary Al-Afasy",
+            album: getSurahName(surahNumber),
+            id: surahNumber.toString(),
+          ),
+        );
+      },
     );
-    if(audioPlayer!=null){
-      await audioPlayer!.dispose();
-    }
-    audioPlayer = AudioPlayer()
-      ..setAudioSource(
-        ConcatenatingAudioSource(children: surahsToPlay),
-      )
-      ..play()
-      ..setLoopMode(LoopMode.off);
-    // audioPlayer = AudioPlayer()..setUrl(currentAyah.audio!);
-    emit(InitAudioHandlerSuccessState());
   }
 
+// Function to handle surah selection
+  Future<void> playSurah(int surahNumber) async {
+    if (audioPlayer == null) {
+      // Initialize the player if it doesn't exist
+      audioPlayer = AudioPlayer();
+      audioPlayer!.setAudioSource(ConcatenatingAudioSource(children: allSurahs));
+    }
+
+    int currentPlayingIndex = audioPlayer!.currentIndex ?? 0;
+
+    if (surahNumber - 1 != currentPlayingIndex) {
+      // Seek only if the selected surah is different from the currently playing one
+      await audioPlayer!.seek(Duration.zero, index: surahNumber - 1);
+    }
+
+    // Start or resume playback
+    if (audioPlayer!.playing) {
+      audioPlayer!.pause(); // Pause if already playing the same surah
+    } else {
+      audioPlayer!.play();
+    }
+  }
   Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
           Duration, Duration?, PlayerState, SequenceState?, PositionData>(
         audioPlayer!.positionStream,
@@ -86,7 +124,7 @@ class ListenCubit extends Cubit<ListenStates> {
       englishName: getSurahNameEnglish(surahIndex + 1),
       revelationType: getPlaceOfRevelation(surahIndex + 1),
     );
-    initHandler(ayahIndex: 0, surahModel: currentSurah!);
+    playSurah(surahIndex + 1);
     // }
     emit(SetSurahStates());
   }
@@ -104,5 +142,11 @@ class ListenCubit extends Cubit<ListenStates> {
   void seekToPrevSurah() {
     audioPlayer?.seekToPrevious();
     emit(SeekToPrevState());
+  }
+  int playingSurahNumber(){
+    if(audioPlayer==null){
+      return 0;
+    }
+    return int.parse(audioPlayer?.sequenceState?.currentSource?.tag?.id)??0;
   }
 }

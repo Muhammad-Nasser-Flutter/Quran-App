@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => ListenCubit()),
+          BlocProvider(create: (context) => ListenCubit()..initializeAllSurahs()),
           BlocProvider(create: (context) => ReadCubit()),
         ],
         child: MaterialApp(

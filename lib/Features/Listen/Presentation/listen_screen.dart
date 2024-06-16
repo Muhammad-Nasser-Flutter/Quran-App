@@ -25,6 +25,12 @@ class ListenScreen extends StatefulWidget {
 class _ListenScreenState extends State<ListenScreen> {
   final int playingSurahNumber = 0;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -86,140 +92,151 @@ class _ListenScreenState extends State<ListenScreen> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsetsDirectional.only(end: 10.0),
-                          child:listenCubit.audioPlayer ==null? const SizedBox():StreamBuilder<PositionData>(
-                              stream: listenCubit.positionDataStream,
-                              builder: (context, snapshot) {
-                                final positionData = snapshot.data;
-                                final mediaItem = positionData
-                                    ?.sequenceState?.currentSource?.tag;
+                          child: listenCubit.audioPlayer == null
+                              ? Center(child: Text12(text: "Loading..."),)
+                              : StreamBuilder<PositionData>(
+                                  stream: listenCubit.positionDataStream,
+                                  builder: (context, snapshot) {
+                                    final positionData = snapshot.data;
+                                    final mediaItem = positionData
+                                        ?.sequenceState?.currentSource?.tag;
 
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        SvgPicture.asset(
-                                          Assets.lastReadIcon,
-                                          width: 25.r,
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              Assets.lastReadIcon,
+                                              width: 25.r,
+                                            ),
+                                            SizedBox(
+                                              width: 10.w,
+                                            ),
+                                            Text16(
+                                              text: "Playing Now",
+                                              textColor: Colors.white,
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(
-                                          width: 10.w,
+                                          height: 10.h,
                                         ),
-                                        Text16(
-                                          text: "Playing Now",
+                                        Text20(
+                                          text: mediaItem?.album ?? "",
                                           textColor: Colors.white,
                                         ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    Text20(
-                                      text: mediaItem?.title??"",
-                                      textColor: Colors.white,
-                                    ),
-                                    Text16(
-                                      text: mediaItem?.artist??"",
-                                      textColor: Colors.white,
-                                    ),
-                                    SizedBox(
-                                      height: 10.h,
-                                    ),
-                                    Column(
-                                      children: [
-                                        ProgressBar(
-                                          timeLabelLocation:
-                                              TimeLabelLocation.below,
-                                          timeLabelTextStyle:
-                                              GoogleFonts.poppins(
-                                                  fontSize: 13.sp,
-                                                  color: Colors.black54),
-                                          barHeight: 3,
-                                          baseBarColor: const Color(0xFF555b6a),
-                                          bufferedBarColor: Colors.grey,
-                                          progressBarColor: Colors.white,
-                                          thumbColor: Colors.white,
-                                          thumbGlowRadius: 20,
-                                          thumbRadius: 7,
-                                          progress: positionData?.position ??
-                                              Duration.zero,
-                                          buffered:
-                                              positionData?.bufferedPosition ??
+                                        Text16(
+                                          text: mediaItem?.artist ?? "",
+                                          textColor: Colors.white,
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        Column(
+                                          children: [
+                                            ProgressBar(
+                                              timeLabelLocation:
+                                                  TimeLabelLocation.below,
+                                              timeLabelTextStyle:
+                                                  GoogleFonts.poppins(
+                                                      fontSize: 13.sp,
+                                                      color: Colors.black54),
+                                              barHeight: 3,
+                                              baseBarColor:
+                                                  const Color(0xFF555b6a),
+                                              bufferedBarColor: Colors.grey,
+                                              progressBarColor: Colors.white,
+                                              thumbColor: Colors.white,
+                                              thumbGlowRadius: 20,
+                                              thumbRadius: 7,
+                                              progress:
+                                                  positionData?.position ??
+                                                      Duration.zero,
+                                              buffered: positionData
+                                                      ?.bufferedPosition ??
                                                   Duration.zero,
-                                          total: positionData?.duration ??
-                                              Duration.zero,
-                                          onSeek: listenCubit.audioPlayer!.seek,
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r),
-                                              color: Colors.white
-                                                  .withOpacity(0.6)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              IconWidget(
-                                                onPressed: () {
-                                                  listenCubit.seekToPrevSurah();
-                                                },
-                                                iconAsset: Assets.prevIcon,
-                                                size: 25.r,
-                                                color: Colors.black54,
-                                                padding: 5,
-                                              ),
-                                              SizedBox(
-                                                width: 10.w,
-                                              ),
-                                              IconWidget(
-                                                onPressed: () {
-                                                  if (!positionData!
-                                                      .playerState.playing) {
-                                                    listenCubit.audioPlayer!
-                                                        .play();
-                                                  } else if (positionData
+                                              total: positionData?.duration ??
+                                                  Duration.zero,
+                                              onSeek:
+                                                  listenCubit.audioPlayer!.seek,
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20.r),
+                                                  color: Colors.white
+                                                      .withOpacity(0.6)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  IconWidget(
+                                                    onPressed: () {
+                                                      listenCubit
+                                                          .seekToPrevSurah();
+                                                    },
+                                                    iconAsset: Assets.prevIcon,
+                                                    size: 25.r,
+                                                    color: Colors.black54,
+                                                    padding: 5,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                  ),
+                                                  IconWidget(
+                                                    onPressed: () {
+                                                      if (!positionData!
                                                           .playerState
-                                                          .processingState !=
-                                                      ProcessingState
-                                                          .completed) {
-                                                    listenCubit.audioPlayer!
-                                                        .pause();
-                                                  }
-                                                },
-                                                iconAsset: positionData
-                                                            ?.playerState
-                                                            .playing ==
-                                                        null
-                                                    ? Assets.playIcon
-                                                    : !positionData!
-                                                            .playerState.playing
+                                                          .playing) {
+                                                        listenCubit.audioPlayer!
+                                                            .play();
+                                                      } else if (positionData
+                                                              .playerState
+                                                              .processingState !=
+                                                          ProcessingState
+                                                              .completed) {
+                                                        listenCubit.audioPlayer!
+                                                            .pause();
+                                                      }
+                                                    },
+                                                    iconAsset: positionData
+                                                                ?.playerState
+                                                                .playing ==
+                                                            null
                                                         ? Assets.playIcon
-                                                        : Assets.pauseIcon,
-                                                size: 30.r,
-                                                color: Colors.black54,
-                                                padding: 5,
+                                                        : !positionData!
+                                                                .playerState
+                                                                .playing
+                                                            ? Assets.playIcon
+                                                            : Assets.pauseIcon,
+                                                    size: 30.r,
+                                                    color: Colors.black54,
+                                                    padding: 5,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10.w,
+                                                  ),
+                                                  IconWidget(
+                                                    onPressed: () {
+                                                      listenCubit
+                                                          .seekToNextSurah();
+                                                    },
+                                                    iconAsset: Assets.nextIcon,
+                                                    size: 25.r,
+                                                    padding: 5,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(
-                                                width: 10.w,
-                                              ),
-                                              IconWidget(
-                                                onPressed: () {
-                                                  listenCubit.seekToNextSurah();
-                                                },
-                                                iconAsset: Assets.nextIcon,
-                                                size: 25.r,
-                                                padding: 5,
-                                                color: Colors.black54,
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ],
-                                    ),
-                                  ],
-                                );
-                              }),
+                                    );
+                                  }),
                         ),
                       ),
                       Image.asset(
@@ -235,7 +252,7 @@ class _ListenScreenState extends State<ListenScreen> {
                 Expanded(
                   child: SurahWidget(
                     fromRead: false,
-                    playingSurahNumber: playingSurahNumber,
+                    playingSurahNumber: listenCubit.playingSurahNumber(),
                   ),
                 )
               ],

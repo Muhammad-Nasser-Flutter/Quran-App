@@ -40,7 +40,7 @@ class ReadScreen extends StatelessWidget {
           vertical: 5.r,
         ),
         child: DefaultTabController(
-          length: 4,
+          length: 3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,

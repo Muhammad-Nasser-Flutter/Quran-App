@@ -12,11 +12,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quran/quran.dart';
 
-class AyahReadWidget extends StatelessWidget {
-  const AyahReadWidget(
-      {super.key, required this.ayahNumber, required this.surahNumber});
+class AyahWidgetFromJuz extends StatelessWidget {
+  const AyahWidgetFromJuz(
+      {super.key, required this.ayahNumber, required this.data, });
   final int ayahNumber;
-  final int surahNumber;
+  final Map<String,dynamic> data;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +42,17 @@ class AyahReadWidget extends StatelessWidget {
                       child: Icon(
                         Icons.circle,
                         color: AppColors.primaryColor,
-                        size: 32.r,
+                        size: 34.r,
                       ),
                     ),
                     Text14(
-                      text: ayahNumber.toString(),
+                      text: (ayahNumber+data["startingAyah"]-1).toString(),
                       textColor: Colors.white,
                       weight: FontWeight.w400,
                     ),
                   ],
                 ),
-                if (isSajdahVerse(surahNumber, ayahNumber))
+                if (isSajdahVerse(data["surahNumber"], (ayahNumber+data["startingAyah"]-1).toInt()))
                   IconWidget(
                     iconAsset: Assets.sagdaIcon,
                     size: 25.r,
@@ -69,20 +71,14 @@ class AyahReadWidget extends StatelessWidget {
                         final mediaItem =
                             positionData?.sequenceState?.currentSource?.tag;
                         return IconWidget(
-                          iconAsset: mediaItem == null || int.parse(mediaItem.id) != ayahNumber
+                          iconAsset:snapshot.data?.sequenceState?.currentSource?.tag?.id!=(ayahNumber+data["startingAyah"]-1).toString()
                               ? Assets.playIcon
-                              : !positionData!.playerState.playing
-                                  ? Assets.playIcon
-                                  : Assets.pauseIcon,
+                              : positionData!.playerState.playing &&data["surahNumber"].toString() ==mediaItem.album.toString()
+                              ? Assets.pauseIcon
+                              : Assets.playIcon,
                           padding: 10,
                           onPressed: () {
-                            if(int.parse(mediaItem.id) != ayahNumber){
-                              cubit.setCurrentAyah(
-                                ayahNumber: ayahNumber,
-                                surahNumber: surahNumber,
-                              );
-
-                            }else{
+                            if(mediaItem.id == (ayahNumber+data["startingAyah"]-1).toString() &&data["surahNumber"].toString() ==mediaItem.album.toString()){
                               if (!positionData!.playerState.playing) {
                                 cubit.audioPlayer!.play();
                               } else if (positionData
@@ -90,6 +86,15 @@ class AyahReadWidget extends StatelessWidget {
                                   ProcessingState.completed) {
                                 cubit.audioPlayer!.pause();
                               }
+                            }else{
+                              print("${data["surahNumber"]} : ${data["numberOfAyahs"]}");
+                              cubit.initializeAllAyahsFromJuz(data);
+                              cubit.setCurrentAyah(
+                                context: context,
+                                ayahNumber: (ayahNumber+data["startingAyah"]-1).toInt(),
+                                surahNumber: data["surahNumber"],
+                                startingAyahNumber: data["startingAyah"],
+                              );
                             }
                           },
                         );
@@ -99,9 +104,13 @@ class AyahReadWidget extends StatelessWidget {
                     iconAsset: Assets.playIcon,
                     padding: 10,
                     onPressed: () {
+                      cubit.initializeAllAyahsFromJuz(data);
+                      print("${data["surahNumber"]} : ${data["numberOfAyahs"]} : ${(ayahNumber + data["startingAyah"] - 1).toInt()}");
                       cubit.setCurrentAyah(
-                        ayahNumber: ayahNumber,
-                        surahNumber: surahNumber,
+                        context: context,
+                        ayahNumber: (ayahNumber+data["startingAyah"]-1).toInt(),
+                        surahNumber: data["surahNumber"],
+                        startingAyahNumber: data["startingAyah"],
                       );
                     },
                   ),
@@ -118,7 +127,7 @@ class AyahReadWidget extends StatelessWidget {
           Container(
             alignment: AlignmentDirectional.centerEnd,
             child: Text18Ar(
-              text: getVerse(surahNumber, ayahNumber),
+              text: getVerse(data["surahNumber"], (ayahNumber+data["startingAyah"]-1).toInt()),
               height: 1.8,
               weight: FontWeight.w600,
             ),
@@ -130,8 +139,8 @@ class AyahReadWidget extends StatelessWidget {
             alignment: AlignmentDirectional.centerStart,
             child: Text16(
               text: getVerseTranslation(
-                surahNumber,
-                ayahNumber,
+                data["surahNumber"],
+                (ayahNumber+data["startingAyah"]-1).toInt(),
               ),
               weight: FontWeight.w500,
               textColor: AppColors.primaryColor,
