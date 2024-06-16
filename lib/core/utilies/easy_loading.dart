@@ -1,6 +1,6 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 void showLoading({
-  EasyLoadingMaskType maskType = EasyLoadingMaskType.black,
+  EasyLoadingMaskType maskType = EasyLoadingMaskType.clear,
 }) {
 
   EasyLoading.show(maskType: maskType,status: "Loading..");

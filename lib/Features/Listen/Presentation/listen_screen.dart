@@ -93,7 +93,7 @@ class _ListenScreenState extends State<ListenScreen> {
                         child: Padding(
                           padding: const EdgeInsetsDirectional.only(end: 10.0),
                           child: listenCubit.audioPlayer == null
-                              ? Center(child: Text12(text: "Loading..."),)
+                              ? Center(child: Text14(text: "Waiting to Play..",textColor: Colors.black,),)
                               : StreamBuilder<PositionData>(
                                   stream: listenCubit.positionDataStream,
                                   builder: (context, snapshot) {
@@ -124,7 +124,7 @@ class _ListenScreenState extends State<ListenScreen> {
                                           height: 10.h,
                                         ),
                                         Text20(
-                                          text: mediaItem?.album ?? "",
+                                          text: mediaItem?.album ?? "Loading..",
                                           textColor: Colors.white,
                                         ),
                                         Text16(

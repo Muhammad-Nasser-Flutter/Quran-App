@@ -1,5 +1,6 @@
 import 'package:Quran/Features/Listen/Bloc/listen_states.dart';
 import 'package:Quran/Features/Quran/models/surah_model.dart';
+import 'package:Quran/core/utilies/easy_loading.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -54,7 +55,7 @@ class ListenCubit extends Cubit<ListenStates> {
   void initializeAllSurahs() {
     allSurahs = List.generate(
       114,
-          (index) {
+      (index) {
         int surahNumber = index + 1;
         return AudioSource.uri(
           Uri.parse(getAudioURLBySurah(surahNumber)),
@@ -71,26 +72,36 @@ class ListenCubit extends Cubit<ListenStates> {
 
 // Function to handle surah selection
   Future<void> playSurah(int surahNumber) async {
-    if (audioPlayer == null) {
-      // Initialize the player if it doesn't exist
-      audioPlayer = AudioPlayer();
-      audioPlayer!.setAudioSource(ConcatenatingAudioSource(children: allSurahs));
-    }
 
-    int currentPlayingIndex = audioPlayer!.currentIndex ?? 0;
+    try {
+      if (audioPlayer == null) {
+        // Initialize the player if it doesn't exist
+        audioPlayer = AudioPlayer();
+        await audioPlayer!
+            .setAudioSource(ConcatenatingAudioSource(children: allSurahs));
+      }
 
-    if (surahNumber - 1 != currentPlayingIndex) {
-      // Seek only if the selected surah is different from the currently playing one
-      await audioPlayer!.seek(Duration.zero, index: surahNumber - 1);
-    }
+      int currentPlayingIndex = audioPlayer!.currentIndex ?? 0;
 
-    // Start or resume playback
-    if (audioPlayer!.playing) {
-      audioPlayer!.pause(); // Pause if already playing the same surah
-    } else {
-      audioPlayer!.play();
+      if (surahNumber - 1 != currentPlayingIndex) {
+        // Seek only if the selected surah is different from the currently playing one
+        await audioPlayer!.seek(Duration.zero, index: surahNumber - 1);
+      }
+
+      // Start or resume playback
+      if (audioPlayer!.playing) {
+        audioPlayer!.pause(); // Pause if already playing the same surah
+      } else {
+        audioPlayer!.play();
+      }
+      hideLoading();
+      print("Hide loading");
+    } catch (e) {
+      hideLoading();
+      print("Hide loading");
     }
   }
+
   Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
           Duration, Duration?, PlayerState, SequenceState?, PositionData>(
         audioPlayer!.positionStream,
@@ -116,7 +127,6 @@ class ListenCubit extends Cubit<ListenStates> {
     if (currentSurah != null) {
       removeCurrentSurah();
     }
-    print(surahIndex);
     currentSurah = SurahModel(
       name: getSurahNameArabic(surahIndex + 1),
       number: surahIndex + 1,
@@ -143,10 +153,11 @@ class ListenCubit extends Cubit<ListenStates> {
     audioPlayer?.seekToPrevious();
     emit(SeekToPrevState());
   }
-  int playingSurahNumber(){
-    if(audioPlayer==null){
+
+  int playingSurahNumber() {
+    if (audioPlayer == null) {
       return 0;
     }
-    return int.parse(audioPlayer?.sequenceState?.currentSource?.tag?.id)??0;
+    return int.parse(audioPlayer?.sequenceState?.currentSource?.tag?.id) ?? 0;
   }
 }

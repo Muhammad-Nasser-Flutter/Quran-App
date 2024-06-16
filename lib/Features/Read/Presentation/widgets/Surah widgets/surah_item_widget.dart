@@ -14,6 +14,7 @@ import 'package:quran/quran_text.dart';
 import '../../../../../core/routing/routes.dart';
 import '../../../../../core/theming/assets.dart';
 import '../../../../../core/theming/colors.dart';
+import '../../../../../core/utilies/easy_loading.dart';
 import '../../../../../core/widgets/custom_texts.dart';
 
 class SurahItemWidget extends StatelessWidget {
@@ -44,6 +45,8 @@ class SurahItemWidget extends StatelessWidget {
                 } else {
                   // print(quranCubit.surahs[index]);
                   // play the surah and go to the surah's page
+                  showLoading();
+
                   listenCubit.setCurrentSurah(
                     surahIndex: index,
                   );

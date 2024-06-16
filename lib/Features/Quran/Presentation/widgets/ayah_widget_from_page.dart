@@ -13,8 +13,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quran/quran.dart';
 
-class AyahWidgetFromJuz extends StatelessWidget {
-  const AyahWidgetFromJuz(
+class AyahWidgetFromPage extends StatelessWidget {
+  const AyahWidgetFromPage(
       {super.key, required this.ayahNumber, required this.data, });
   final int ayahNumber;
   final Map<String,dynamic> data;
@@ -89,7 +89,7 @@ class AyahWidgetFromJuz extends StatelessWidget {
                               }
                             }else{
                               print("${data["surahNumber"]} : ${data["numberOfAyahs"]}");
-                              cubit.initializeAllAyahsFromJuz(data);
+                              cubit.initializeAllAyahsFromPage(data);
                               cubit.setCurrentAyah(
                                 context: context,
                                 ayahNumber: (ayahNumber+data["startingAyah"]-1).toInt(),
@@ -105,7 +105,7 @@ class AyahWidgetFromJuz extends StatelessWidget {
                     iconAsset: Assets.playIcon,
                     padding: 10,
                     onPressed: () {
-                      cubit.initializeAllAyahsFromJuz(data);
+                      cubit.initializeAllAyahsFromPage(data);
                       print("${data["surahNumber"]} : ${data["numberOfAyahs"]} : ${(ayahNumber + data["startingAyah"] - 1).toInt()}");
                       cubit.setCurrentAyah(
                         context: context,

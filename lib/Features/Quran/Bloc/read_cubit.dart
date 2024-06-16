@@ -98,34 +98,50 @@ class ReadCubit extends Cubit<ReadStates> {
       },
     );
   }
+  void initializeAllAyahsFromPage(Map<String, dynamic> data) {
+    surahAyahs = List.generate(
+      data["numberOfAyahs"],
+          (index) {
+        // int surahNumber = index ;
+        return AudioSource.uri(
+          Uri.parse(getAudioURLByVerse(data["surahNumber"], data["startingAyah"] + index )),
+          tag: MediaItem(
+            title: getVerse(data["surahNumber"], data["startingAyah"] + index),
+            artist: "Mishary Al-Afasy",
+            album: data["surahNumber"].toString(),
+            id: (data["startingAyah"] + index).toString(),
+          ),
+        );
+      },
+    );
+  }
   Future<void> playAyah(int ayahNumber,{required int startingAyah,required int surahNumber}) async {
+    try{
+      if (audioPlayer == null) {
+        // Initialize the player if it doesn't exist
+        print("here");
+        audioPlayer = AudioPlayer();
+        audioPlayer!.setAudioSource(ConcatenatingAudioSource(children: surahAyahs));
+      }
 
-    if (audioPlayer == null) {
-      // Initialize the player if it doesn't exist
-      print("here");
-      audioPlayer = AudioPlayer();
-      audioPlayer!.setAudioSource(ConcatenatingAudioSource(children: surahAyahs));
+      int currentPlayingIndex = audioPlayer?.currentIndex ?? 0;
+      if (ayahNumber - startingAyah != currentPlayingIndex) {
+        // Seek only if the selected surah is different from the currently playing one
+        await audioPlayer!.seek(Duration.zero, index: ayahNumber - startingAyah);
+      }
+
+      // Start or resume playback
+      if (audioPlayer!.playing) {
+        audioPlayer!.pause(); // Pause if already playing the same surah
+      } else {
+        audioPlayer!.play();
+      }
+      hideLoading();
+      print("Hide loading");
+    }catch(e){
+      hideLoading();
     }
 
-    int currentPlayingIndex = audioPlayer?.currentIndex ?? 0;
-
-    print("surah length: ${surahAyahs.length} ayahs");
-    print("ayah number: $ayahNumber");
-    print(" seeking to : ${ayahNumber - startingAyah}");
-    print(" surahNumber : ${surahNumber}");
-    print(" currentPlayingIndex : ${currentPlayingIndex}");
-    print(" check : ${ayahNumber - startingAyah != currentPlayingIndex}");
-    if (ayahNumber - startingAyah != currentPlayingIndex) {
-      // Seek only if the selected surah is different from the currently playing one
-      await audioPlayer!.seek(Duration.zero, index: ayahNumber - startingAyah);
-    }
-
-    // Start or resume playback
-    if (audioPlayer!.playing) {
-      audioPlayer!.pause(); // Pause if already playing the same surah
-    } else {
-      audioPlayer!.play();
-    }
   }
 
   Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
@@ -147,6 +163,8 @@ class ReadCubit extends Cubit<ReadStates> {
 
   AyahModel? currentAyah;
   void setCurrentAyah({required int ayahNumber, required int surahNumber,required context,required int startingAyahNumber}) {
+    showLoading();
+    print("Showed loading");
     if(ListenCubit.get(context).audioPlayer!=null){
       ListenCubit.get(context).audioPlayer!.stop();
       print("audio player disposed");

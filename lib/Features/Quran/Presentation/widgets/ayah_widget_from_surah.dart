@@ -12,6 +12,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quran/quran.dart';
 
+import '../../../../core/utilies/easy_loading.dart';
+
 class AyahWidgetFromSurah extends StatelessWidget {
   const AyahWidgetFromSurah(
       {super.key, required this.ayahNumber, required this.surahNumber});
