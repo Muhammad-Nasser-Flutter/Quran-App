@@ -13,19 +13,14 @@ import '../../../core/widgets/separator.dart';
 import '../Bloc/read_cubit.dart';
 import '../Bloc/read_states.dart';
 
-class JuzReadScreen extends StatefulWidget {
-  const JuzReadScreen({super.key, required this.juzData});
+class JuzReadScreen extends StatelessWidget {
+  JuzReadScreen({super.key, required this.juzData});
   final Map<String, dynamic> juzData;
 
-  @override
-  State<JuzReadScreen> createState() => _JuzReadScreenState();
-}
-
-class _JuzReadScreenState extends State<JuzReadScreen> {
   List<Map<String, dynamic>> getJuzSurahList() {
     List<Map<String, dynamic>> mapList = [];
 
-    getSurahAndVersesFromJuz(widget.juzData['number']).forEach((key, value) {
+    getSurahAndVersesFromJuz(juzData['number']).forEach((key, value) {
       mapList.add({
         "surahNumber": key,
         "numberOfAyahs": value[1] - value[0] + 1,
@@ -36,16 +31,19 @@ class _JuzReadScreenState extends State<JuzReadScreen> {
     return mapList;
   }
 
+  final ScrollController _scrollController = ScrollController();
+
+  final List<double> _ayahOffsets = [];
+
   @override
   Widget build(BuildContext context) {
-    print(getJuzSurahList());
     return Scaffold(
       appBar: AppBar(
         leading: const Back(),
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text20(
-          text: widget.juzData['nameEng'],
+          text: juzData['nameEng'],
           weight: FontWeight.w600,
         ),
         actions: [
@@ -57,7 +55,7 @@ class _JuzReadScreenState extends State<JuzReadScreen> {
       body: BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
         return PopScope(
           onPopInvoked: (b) {
-            if (ReadCubit.get(context).audioPlayer != null) {
+            if (ReadCubit.get(context).audioPlayer.sequence != null) {
               ReadCubit.get(context).removePlayer();
             }
           },
@@ -89,6 +87,9 @@ class _JuzReadScreenState extends State<JuzReadScreen> {
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
                                 return AyahWidgetFromJuz(
+                                  onRender: (renderBox) {
+                                    _ayahOffsets.add(renderBox.localToGlobal(Offset.zero).dy);
+                                  },
                                   ayahNumber: index + 1,
                                   data: getJuzSurahList()[surahIndex],
                                 );

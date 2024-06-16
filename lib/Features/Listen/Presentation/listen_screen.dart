@@ -92,7 +92,7 @@ class _ListenScreenState extends State<ListenScreen> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsetsDirectional.only(end: 10.0),
-                          child: listenCubit.audioPlayer == null
+                          child: listenCubit.audioPlayer .sequence ==null
                               ? Center(child: Text14(text: "Waiting to Play..",textColor: Colors.black,),)
                               : StreamBuilder<PositionData>(
                                   stream: listenCubit.positionDataStream,
@@ -160,7 +160,7 @@ class _ListenScreenState extends State<ListenScreen> {
                                               total: positionData?.duration ??
                                                   Duration.zero,
                                               onSeek:
-                                                  listenCubit.audioPlayer!.seek,
+                                                  listenCubit.audioPlayer.seek,
                                             ),
                                             Container(
                                               decoration: BoxDecoration(
@@ -191,14 +191,14 @@ class _ListenScreenState extends State<ListenScreen> {
                                                       if (!positionData!
                                                           .playerState
                                                           .playing) {
-                                                        listenCubit.audioPlayer!
+                                                        listenCubit.audioPlayer
                                                             .play();
                                                       } else if (positionData
                                                               .playerState
                                                               .processingState !=
                                                           ProcessingState
                                                               .completed) {
-                                                        listenCubit.audioPlayer!
+                                                        listenCubit.audioPlayer
                                                             .pause();
                                                       }
                                                     },

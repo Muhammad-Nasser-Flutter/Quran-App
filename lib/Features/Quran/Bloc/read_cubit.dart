@@ -20,49 +20,9 @@ class ReadCubit extends Cubit<ReadStates> {
   ReadCubit() : super(QuranInitialState());
   static ReadCubit get(context) => BlocProvider.of(context);
 
-  AudioPlayer? audioPlayer;
+  AudioPlayer audioPlayer = AudioPlayer();
   List<AudioSource> surahAyahs = [];
-  // List<AudioSource> ayahsToPlay = [];
-  // void initHandler(
-  //     // Ayahs currentAyah,
-  //     {
-  //   required int numberOfAyahsInSurah,
-  //   required AyahModel ayahModel,
-  // }) async {
-  //   // to make the chose n track the first item played
-  //   print("$numberOfAyahsInSurah : ${ayahModel.numberInSurah!} ");
-  //   // we're making a playlist of ayahs from the chosen one to the end
-  //   print(ayahModel.surahNumber);
-  //   ayahsToPlay = List.generate(
-  //     (numberOfAyahsInSurah - ayahModel.numberInSurah!)+1,
-  //     (index) => AudioSource.uri(
-  //       Uri.parse(
-  //         getAudioURLByVerse(
-  //           ayahModel.surahNumber!,
-  //           index + ayahModel.numberInSurah!,
-  //         ),
-  //       ),
-  //       tag: MediaItem(
-  //         title: ayahModel.name!,
-  //         artist: "Mushary Al Afasy",
-  //         album: ayahModel.translationInEnglish,
-  //         id: ayahModel.numberInSurah!.toString(),
-  //       ),
-  //     ),
-  //   );
-  //   print(ayahsToPlay.length);
-  //   if (audioPlayer != null) {
-  //     await audioPlayer!.dispose();
-  //   }
-  //   audioPlayer = AudioPlayer()
-  //     ..setAudioSource(
-  //       ConcatenatingAudioSource(children: ayahsToPlay),
-  //     )
-  //     ..play()
-  //     ..setLoopMode(LoopMode.off);
-  //   // audioPlayer = AudioPlayer()..setUrl(currentAyah.audio!);
-  //   emit(InitAudioHandlerSuccessFromReadState());
-  // }
+
   void initializeAllAyahsFromSurah(int surahNumber) {
     surahAyahs = List.generate(
       getVerseCount(surahNumber),
@@ -117,24 +77,19 @@ class ReadCubit extends Cubit<ReadStates> {
   }
   Future<void> playAyah(int ayahNumber,{required int startingAyah,required int surahNumber}) async {
     try{
-      if (audioPlayer == null) {
-        // Initialize the player if it doesn't exist
-        print("here");
-        audioPlayer = AudioPlayer();
-        audioPlayer!.setAudioSource(ConcatenatingAudioSource(children: surahAyahs));
-      }
+      await audioPlayer.setAudioSource(ConcatenatingAudioSource(children: surahAyahs));
 
-      int currentPlayingIndex = audioPlayer?.currentIndex ?? 0;
+      int currentPlayingIndex = audioPlayer.currentIndex ?? 0;
       if (ayahNumber - startingAyah != currentPlayingIndex) {
         // Seek only if the selected surah is different from the currently playing one
-        await audioPlayer!.seek(Duration.zero, index: ayahNumber - startingAyah);
+        await audioPlayer.seek(Duration.zero, index: ayahNumber - startingAyah);
       }
 
       // Start or resume playback
-      if (audioPlayer!.playing) {
-        audioPlayer!.pause(); // Pause if already playing the same surah
+      if (audioPlayer.playing) {
+        audioPlayer.pause(); // Pause if already playing the same surah
       } else {
-        audioPlayer!.play();
+        audioPlayer.play();
       }
       hideLoading();
       print("Hide loading");
@@ -146,11 +101,11 @@ class ReadCubit extends Cubit<ReadStates> {
 
   Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
           Duration, Duration?, PlayerState, SequenceState?, PositionData>(
-        audioPlayer!.positionStream,
-        audioPlayer!.bufferedPositionStream,
-        audioPlayer!.durationStream,
-        audioPlayer!.playerStateStream,
-        audioPlayer!.sequenceStateStream,
+        audioPlayer.positionStream,
+        audioPlayer.bufferedPositionStream,
+        audioPlayer.durationStream,
+        audioPlayer.playerStateStream,
+        audioPlayer.sequenceStateStream,
         (position, bufferedPosition, duration, playerState, sequenceState) =>
             PositionData(
           position,
@@ -165,8 +120,8 @@ class ReadCubit extends Cubit<ReadStates> {
   void setCurrentAyah({required int ayahNumber, required int surahNumber,required context,required int startingAyahNumber}) {
     showLoading();
     print("Showed loading");
-    if(ListenCubit.get(context).audioPlayer!=null){
-      ListenCubit.get(context).audioPlayer!.stop();
+    if(ListenCubit.get(context).audioPlayer.sequence!=null){
+      ListenCubit.get(context).audioPlayer.stop();
       print("audio player disposed");
     }
       removePlayer();
@@ -186,12 +141,11 @@ class ReadCubit extends Cubit<ReadStates> {
 
   void removeCurrentAyah() {
     currentAyah = null;
-    audioPlayer!.stop();
+    audioPlayer.stop();
 
   }
   void removePlayer() {
     currentAyah = null;
-    audioPlayer?.stop();
-    audioPlayer = null;
+    audioPlayer.stop();
   }
 }

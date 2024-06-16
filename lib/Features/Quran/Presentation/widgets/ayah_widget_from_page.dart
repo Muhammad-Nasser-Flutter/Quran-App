@@ -64,7 +64,7 @@ class AyahWidgetFromPage extends StatelessWidget {
                   iconAsset: Assets.shareIcon,
                   padding: 10,
                 ),
-                if (cubit.audioPlayer != null)
+                if (cubit.audioPlayer.sequence != null)
                   StreamBuilder<PositionData>(
                       stream: cubit.positionDataStream,
                       builder: (context, snapshot) {
@@ -81,11 +81,11 @@ class AyahWidgetFromPage extends StatelessWidget {
                           onPressed: () {
                             if(mediaItem.id == (ayahNumber+data["startingAyah"]-1).toString() &&data["surahNumber"].toString() ==mediaItem.album.toString()){
                               if (!positionData!.playerState.playing) {
-                                cubit.audioPlayer!.play();
+                                cubit.audioPlayer.play();
                               } else if (positionData
                                   .playerState.processingState !=
                                   ProcessingState.completed) {
-                                cubit.audioPlayer!.pause();
+                                cubit.audioPlayer.pause();
                               }
                             }else{
                               print("${data["surahNumber"]} : ${data["numberOfAyahs"]}");
@@ -100,7 +100,7 @@ class AyahWidgetFromPage extends StatelessWidget {
                           },
                         );
                       }),
-                if (cubit.audioPlayer == null)
+                if (cubit.audioPlayer.sequence == null)
                   IconWidget(
                     iconAsset: Assets.playIcon,
                     padding: 10,

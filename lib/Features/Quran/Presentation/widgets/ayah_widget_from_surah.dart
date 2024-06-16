@@ -63,7 +63,7 @@ class AyahWidgetFromSurah extends StatelessWidget {
                   iconAsset: Assets.shareIcon,
                   padding: 10,
                 ),
-                if (cubit.audioPlayer != null)
+                if (cubit.audioPlayer.sequence!=null)
                   StreamBuilder<PositionData>(
                       stream: cubit.positionDataStream,
                       builder: (context, snapshot) {
@@ -88,17 +88,17 @@ class AyahWidgetFromSurah extends StatelessWidget {
 
                             }else{
                               if (!positionData!.playerState.playing) {
-                                cubit.audioPlayer!.play();
+                                cubit.audioPlayer.play();
                               } else if (positionData
                                   .playerState.processingState !=
                                   ProcessingState.completed) {
-                                cubit.audioPlayer!.pause();
+                                cubit.audioPlayer.pause();
                               }
                             }
                           },
                         );
                       }),
-                if (cubit.audioPlayer == null)
+                if (cubit.audioPlayer.sequence==null)
                   IconWidget(
                     iconAsset: Assets.playIcon,
                     padding: 10,

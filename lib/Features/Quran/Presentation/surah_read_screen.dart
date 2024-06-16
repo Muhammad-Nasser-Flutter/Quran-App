@@ -47,7 +47,7 @@ class _SurahReadScreenState extends State<SurahReadScreen> {
       body: BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
         return PopScope(
           onPopInvoked: (b) {
-            if (ReadCubit.get(context).audioPlayer != null) {
+            if (ReadCubit.get(context).audioPlayer.sequence != null) {
               ReadCubit.get(context).removePlayer();
             }
           },
