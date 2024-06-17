@@ -1,7 +1,7 @@
 class Assets {
   Assets._();
 
-  static const String azanIcon = "assets/images/Azan Icon.svg";
+  static const String azanIcon = "assets/images/AthanIcon.svg";
   static const String searchIcon = "assets/images/searchIcon.svg";
   static const String menuIcon = "assets/images/menu.svg";
   static const String readIcon = "assets/images/readIcon.svg";

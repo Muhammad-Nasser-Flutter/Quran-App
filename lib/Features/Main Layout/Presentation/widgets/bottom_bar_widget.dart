@@ -109,7 +109,7 @@ class BottomBarWidget extends StatelessWidget {
                               color: mainLayoutInitialScreenIndex == 2
                                   ? AppColors.primaryColor
                                   : Colors.grey.shade600,
-                              size: 30.r,
+                              size: 24.r,
                             ),
                           ],
                         ),
