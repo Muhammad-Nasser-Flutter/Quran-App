@@ -1,8 +1,9 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.9.0'
     repositories {
         google()
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
@@ -10,12 +11,21 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.3.1'
         classpath 'com.google.gms:google-services:4.4.0'
     }
+    ext {
+        compileSdkVersion   = 34                // or higher / as desired
+        targetSdkVersion    = 34                // or higher / as desired
+        appCompatVersion    = "1.4.2"           // or higher / as desired
+        }
+
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        // [required] background_fetch
+        maven { url "${project(':background_fetch').projectDir}/libs" }
     }
 }
 

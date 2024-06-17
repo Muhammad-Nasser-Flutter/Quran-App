@@ -1,3 +1,4 @@
+import 'package:Quran/Features/Athan/bloc/athan_cubit.dart';
 import 'package:Quran/Features/Main%20Layout/Presentation/widgets/bottom_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,9 +7,22 @@ import '../../../core/routing/app_router.dart';
 import '../Bloc/main_layout_cubit.dart';
 import '../Bloc/main_layout_state.dart';
 
-
-class MainLayoutScreen extends StatelessWidget {
+class MainLayoutScreen extends StatefulWidget {
   const MainLayoutScreen({super.key});
+
+  @override
+  State<MainLayoutScreen> createState() => _MainLayoutScreenState();
+}
+
+class _MainLayoutScreenState extends State<MainLayoutScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    AthanCubit.get(context).requestPermissions();
+    AthanCubit.get(context).setupTZ();
+  }
 
   @override
   Widget build(BuildContext context) {
