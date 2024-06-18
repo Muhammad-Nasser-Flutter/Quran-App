@@ -1,5 +1,7 @@
 import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
 import 'package:Quran/Features/Quran/Bloc/read_states.dart';
+import 'package:Quran/core/functions/flutter_toast.dart';
+import 'package:Quran/core/theming/colors.dart';
 import 'package:Quran/core/utilies/easy_loading.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -122,6 +124,9 @@ class ReadCubit extends Cubit<ReadStates> {
     } catch (e) {
       print(e.toString());
       hideLoading();
+      audioPlayer.sequence?.clear();
+      audioPlayer.stop();
+      customToast(msg: "No Internet Connection", color: AppColors.primaryColor);
       emit(SetAyahErrorStates());
     }
   }
@@ -178,6 +183,14 @@ class ReadCubit extends Cubit<ReadStates> {
     audioPlayer.stop();
   }
 
+  void pausePlayer() {
+      audioPlayer.pause();
+    emit(PausePlayerState());
+  }
+  void resumePlayer() {
+      audioPlayer.play();
+    emit(ResumePlayerState());
+  }
   void removePlayer() {
     currentAyah = null;
     audioPlayer.stop();

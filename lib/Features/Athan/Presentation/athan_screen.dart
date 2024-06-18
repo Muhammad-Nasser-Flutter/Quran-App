@@ -58,7 +58,7 @@ class _AthanScreenState extends State<AthanScreen> {
           if(state is GetPrayersLoadingState){
             return const LoadingLottie();
           }else if(state is GetPrayersErrorState){
-            return Text18(text: "Something went wrong");
+            return Text18(text: "No Internet Connection");
           }
           return ListView.builder(
             itemCount: athanCubit.prayers.length,

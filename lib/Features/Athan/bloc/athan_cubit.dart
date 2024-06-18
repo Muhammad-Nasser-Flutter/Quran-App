@@ -60,33 +60,38 @@ class AthanCubit extends Cubit<AthanStates> {
       emit(GetPrayersErrorState());
       return;
     } else {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      final url =
-          'http://api.aladhan.com/v1/calendar/${DateTime.now().year}/${DateTime.now().month}?latitude=${position.latitude}&longitude=${position.longitude}&method=4';
+      try {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        final url =
+            'http://api.aladhan.com/v1/calendar/${DateTime.now().year}/${DateTime.now().month}?latitude=${position.latitude}&longitude=${position.longitude}&method=4';
 
-      final response = await http.get(Uri.parse(url));
+        final response = await http.get(Uri.parse(url));
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        if (data['status'] == 'OK') {
-          print(data["data"][DateTime.now().day - 1]["timings"]);
-          data["data"][DateTime.now().day - 1]["timings"].forEach((key, value) {
-            prayers.add({
-              "key": key,
-              "value": value,
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          if (data['status'] == 'OK') {
+            print(data["data"][DateTime.now().day - 1]["timings"]);
+            data["data"][DateTime.now().day - 1]["timings"].forEach((key, value) {
+              prayers.add({
+                "key": key,
+                "value": value,
+              });
             });
-          });
-          emit(GetPrayersSuccessState());
-          return data["data"][DateTime.now().day - 1]["timings"];
+            emit(GetPrayersSuccessState());
+            return data["data"][DateTime.now().day - 1]["timings"];
+          } else {
+            emit(GetPrayersErrorState());
+            throw Exception('Failed to get timezone data: ${data['status']}');
+          }
         } else {
           emit(GetPrayersErrorState());
-          throw Exception('Failed to get timezone data: ${data['status']}');
+          throw Exception('Failed to fetch timezone data from API');
         }
-      } else {
+      }catch (e) {
         emit(GetPrayersErrorState());
-        throw Exception('Failed to fetch timezone data from API');
       }
+
     }
   }
 

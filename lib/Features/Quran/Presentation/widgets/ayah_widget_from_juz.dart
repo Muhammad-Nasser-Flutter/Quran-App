@@ -10,11 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:internet_connectivity_checker/internet_connectivity_checker.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:quran/quran.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/cache_helper/cache_helper.dart';
+import '../../../../core/functions/flutter_toast.dart';
 
 class AyahWidgetFromJuz extends StatelessWidget {
   const AyahWidgetFromJuz({
@@ -79,31 +81,39 @@ class AyahWidgetFromJuz extends StatelessWidget {
                       Share.share(getVerse(data["surahNumber"], (data["startingAyah"]+ayahNumber-1)));
                     },
                   ),
-                  IconWidget(
-                    iconAsset:
-                        (cubit.currentAyah?.numberInSurah == ayahNumber) &&
-                                (cubit.currentAyah?.surahNumber ==
-                                    data["surahNumber"])
-                            ? isPlaying
-                                ? Assets.pauseIcon
-                                : Assets.playIcon
+                  ConnectivityBuilder(
+                    builder:(status){
+                      return IconWidget(
+                        iconAsset: (cubit.currentAyah?.numberInSurah == ayahNumber) &&
+                            (cubit.currentAyah?.surahNumber == data["surahNumber"])
+                            ? isPlaying&&cubit.audioPlayer.playing
+                            ? Assets.pauseIcon
+                            : Assets.playIcon
                             : Assets.playIcon,
-                    padding: 10,
-                    onPressed: () {
-                      if (!isPlaying) {
-                        cubit.setCurrentAyah(
-                          context: context,
-                          ayahNumber: ayahNumber,
-                          surahNumber: data["surahNumber"],
-                          startingAyahNumber: 1,
-                        );
-                      } else {
-                        if (!cubit.audioPlayer.playing) {
-                          cubit.audioPlayer.play();
-                        } else {
-                          cubit.audioPlayer.pause();
-                        }
-                      }
+                        padding: 10,
+                        onPressed: () {
+                          if(status == ConnectivityStatus.online) {
+                            if (!isPlaying) {
+                              cubit.setCurrentAyah(
+                                context: context,
+                                ayahNumber: ayahNumber,
+                                surahNumber: data["surahNumber"],
+                                startingAyahNumber: 1,
+                              );
+                            } else {
+                              if (!cubit.audioPlayer.playerState.playing) {
+                                cubit.resumePlayer();
+                              } else {
+                                cubit.pausePlayer();
+                              }
+                            }
+                          }else{
+                            customToast(msg: "No Internet Connection", color: AppColors.primaryColor);
+
+                          }
+
+                        },
+                      );
                     },
                   ),
                   IconWidget(

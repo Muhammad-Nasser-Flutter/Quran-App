@@ -16,3 +16,5 @@ class SetAyahSuccessStates extends ReadStates{}
 class SetAyahErrorStates extends ReadStates{}
 
 class SetLastReadState extends ReadStates{}
+class PausePlayerState extends ReadStates{}
+class ResumePlayerState extends ReadStates{}
