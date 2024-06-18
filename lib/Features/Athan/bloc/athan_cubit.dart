@@ -48,8 +48,9 @@ class AthanCubit extends Cubit<AthanStates> {
     }
   }
 
-  List<dynamic > prayers = [];
+  List<Map<String, dynamic>> prayers = [];
   Future<dynamic> getPrayerTimesFromApi() async {
+    prayers = [];
     emit(GetPrayersLoadingState());
     LocationPermission permission = await Geolocator.checkPermission();
     if (!(await Permission.location.isGranted)) {
@@ -70,7 +71,12 @@ class AthanCubit extends Cubit<AthanStates> {
         final data = jsonDecode(response.body);
         if (data['status'] == 'OK') {
           print(data["data"][DateTime.now().day - 1]["timings"]);
-          prayers = data["data"][DateTime.now().day - 1]["timings"];
+          data["data"][DateTime.now().day - 1]["timings"].forEach((key, value) {
+            prayers.add({
+              "key": key,
+              "value": value,
+            });
+          });
           emit(GetPrayersSuccessState());
           return data["data"][DateTime.now().day - 1]["timings"];
         } else {

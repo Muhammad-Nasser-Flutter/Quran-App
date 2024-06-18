@@ -10,6 +10,8 @@ import 'package:quran/quran.dart';
 
 import '../../../core/Api/endPoints.dart';
 import '../../../core/Api/my_dio.dart';
+import '../../../core/cache_helper/cache_helper.dart';
+import '../../../core/cache_helper/cache_values.dart';
 import '../../Listen/models/position_data.dart';
 import '../models/ayah_model.dart';
 import '../models/quran_model.dart';
@@ -23,6 +25,11 @@ class ReadCubit extends Cubit<ReadStates> {
   AudioPlayer audioPlayer = AudioPlayer();
   List<AudioSource> surahAyahs = [];
 
+  void setLastReadSurahAndAyah(int surahNumber, int ayahNumber) {
+    CacheHelper.saveData(key: CacheKeys.lastReadSurah, value: surahNumber);
+    CacheHelper.saveData(key: CacheKeys.lastReadAyah, value: ayahNumber);
+    emit(SetLastReadState());
+  }
   void initializeAllAyahsFromSurah(int surahNumber) {
     surahAyahs = List.generate(
       getVerseCount(surahNumber),

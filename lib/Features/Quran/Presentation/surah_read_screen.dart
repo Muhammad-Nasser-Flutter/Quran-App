@@ -57,7 +57,6 @@ class SurahReadScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     ListView.builder(addAutomaticKeepAlives: false,
-
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
@@ -67,11 +66,6 @@ class SurahReadScreen extends StatelessWidget {
                           surahNumber: surahNumber,
                         );
                       },
-                      // separatorBuilder: (context, index) {
-                      //   return Separator(
-                      //     margin: 20.h,
-                      //   );
-                      // },
                       itemCount: getVerseCount(surahNumber),
                     ),
                   ],

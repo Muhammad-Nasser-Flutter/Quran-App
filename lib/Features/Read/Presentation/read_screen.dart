@@ -1,12 +1,18 @@
 import 'package:Quran/Features/Read/Presentation/widgets/Read%20TabBar/read_tab_bar.dart';
 import 'package:Quran/Features/Read/Presentation/widgets/Read%20TabBar/read_tab_bar_view.dart';
+import 'package:Quran/core/cache_helper/cache_helper.dart';
+import 'package:Quran/core/cache_helper/cache_values.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:quran/quran.dart';
 import '../../../core/theming/assets.dart';
 import '../../../core/theming/colors.dart';
 import '../../../core/widgets/custom_texts.dart';
 import '../../../core/widgets/icon_widget.dart';
+import '../../Quran/Bloc/read_cubit.dart';
+import '../../Quran/Bloc/read_states.dart';
 
 class ReadScreen extends StatelessWidget {
   const ReadScreen({super.key});
@@ -53,53 +59,67 @@ class ReadScreen extends StatelessWidget {
               SizedBox(
                 height: 10.h,
               ),
-              Center(
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      Assets.readTopPoster,
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                      top: 22.r,
-                      left: 20.r,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
+              BlocBuilder<ReadCubit, ReadStates>(
+                builder:(context,state){
+                  return Center(
+                    child: Stack(
+                      children: [
+                        Image.asset(
+                          Assets.readTopPoster,
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          top: 22.r,
+                          left: 20.r,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SvgPicture.asset(
-                                Assets.lastReadIcon,
-                                width: 25.r,
+                              Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    Assets.lastReadIcon,
+                                    width: 25.r,
+                                  ),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  Text16(
+                                    text: "Last Read",
+                                    textColor: Colors.white,
+                                  ),
+                                ],
                               ),
                               SizedBox(
-                                width: 10.w,
+                                height: 15.h,
+                              ),
+                              Text20(
+                                text: CacheHelper.getData(
+                                    key: CacheKeys.lastReadSurah) !=
+                                    null
+                                    ? getSurahName(CacheHelper.getData(
+                                    key: CacheKeys.lastReadSurah))
+                                    : "No Reads Yet",
+                                textColor: Colors.white,
+                              ),
+                              SizedBox(
+                                height: 5.h,
                               ),
                               Text16(
-                                text: "Last Read",
+                                text: CacheHelper.getData(
+                                    key: CacheKeys.lastReadAyah)!=
+                                    null
+                                    ? "Ayah No. : ${CacheHelper.getData(key: CacheKeys.lastReadAyah)}"
+                                    : "",
                                 textColor: Colors.white,
+                                weight: FontWeight.w400,
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 30.h,
-                          ),
-                          Text20(
-                            text: "Al-Fatiha",
-                            textColor: Colors.white,
-                          ),
-                          // SizedBox(
-                          //   height: 5.h,
-                          // ),
-                          Text16(
-                            text: "Ayah No: 1",
-                            textColor: Colors.white,weight: FontWeight.w400,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                } ,
               ),
               SizedBox(
                 height: 20.h,

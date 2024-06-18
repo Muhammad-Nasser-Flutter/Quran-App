@@ -249,10 +249,9 @@ class _ListenScreenState extends State<ListenScreen> {
                 SizedBox(
                   height: 10.h,
                 ),
-                Expanded(
+                const Expanded(
                   child: SurahWidget(
                     fromRead: false,
-                    playingSurahNumber: listenCubit.playingSurahNumber(),
                   ),
                 )
               ],

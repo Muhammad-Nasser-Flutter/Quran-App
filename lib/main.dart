@@ -33,7 +33,7 @@ void main() async {
 
   runApp(
     BlocProvider(
-      create: (context) => AthanCubit(),
+      create: (context) => AthanCubit()..requestPermissions(),
       child: MyApp(
         appRouter: AppRouter(),
       ),
@@ -61,16 +61,18 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     // Configure BackgroundFetch.
     int status = await BackgroundFetch.configure(
-        BackgroundFetchConfig(startOnBoot: false,
-            minimumFetchInterval: 720,
-            stopOnTerminate: false,
-            enableHeadless: true,
-            requiresBatteryNotLow: false,
-            forceAlarmManager: true,
-            requiresCharging: false,
-            requiresStorageNotLow: false,
-            requiresDeviceIdle: false,
-            requiredNetworkType: NetworkType.NONE), (String taskId) async {
+        BackgroundFetchConfig(
+          startOnBoot: false,
+          minimumFetchInterval: 720,
+          stopOnTerminate: false,
+          enableHeadless: true,
+          requiresBatteryNotLow: false,
+          forceAlarmManager: true,
+          requiresCharging: false,
+          requiresStorageNotLow: false,
+          requiresDeviceIdle: false,
+          requiredNetworkType: NetworkType.NONE,
+        ), (String taskId) async {
       AthanCubit.get(context).requestPermissions();
       AthanCubit.get(context).setupTZ();
 

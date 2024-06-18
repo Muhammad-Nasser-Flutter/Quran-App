@@ -88,17 +88,16 @@ class PageReadScreen extends StatelessWidget {
                                 height: 20.h,
                               ),
                               ListView.separated(
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return AyahWidgetFromPage(
-                                    isPlaying: cubit.currentAyah
-                                                ?.numberInSurah ==
-                                            index + 1 &&
-                                        cubit.currentAyah?.surahNumber ==
-                                            getPageSurahList()[surahIndex]
-                                            ["surahNumber"],
+                                    isPlaying:
+                                        cubit.currentAyah?.numberInSurah ==
+                                                index + 1 &&
+                                            cubit.currentAyah?.surahNumber ==
+                                                getPageSurahList()[surahIndex]
+                                                    ["surahNumber"],
                                     ayahNumber: index + 1,
                                     data: getPageSurahList()[surahIndex],
                                   );

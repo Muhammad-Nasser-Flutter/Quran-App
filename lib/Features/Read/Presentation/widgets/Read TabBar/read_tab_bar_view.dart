@@ -13,7 +13,6 @@ class ReadTabBarView extends StatelessWidget {
         children: [
           SurahWidget(
             fromRead: true,
-            playingSurahNumber:0,
           ),
           JuzWidget(),
           PageWidget(),

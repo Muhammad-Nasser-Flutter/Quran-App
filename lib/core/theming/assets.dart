@@ -17,6 +17,8 @@ class Assets {
   static const String basmala = "assets/images/basmala.svg";
   static const String bookIcon = "assets/images/book.svg";
   static const String lastReadIcon = "assets/images/lastRead.svg";
+  static const String saveFillIcon = "assets/images/save_fill.svg";
+  static const String loadingLottie = "assets/lottie/loading_lottie.json";
   static const String readTopPoster = "assets/images/Read top poster.png";
   static const String headphonesImage = "assets/images/headphones.png";
   static const String surahBorderImage = "assets/images/SurahBorder.png";

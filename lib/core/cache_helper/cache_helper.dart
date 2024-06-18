@@ -18,7 +18,12 @@ class CacheHelper {
 
   static void changeLanguageToEn() async {
     await CacheHelper.saveData(key: CacheKeys.currentLanguage, value: "en");
-
+  }
+  static int? lastReadSurah() {
+    return CacheHelper.getData( key: CacheKeys.lastReadSurah,)??0;
+  }
+  static int? lastReadAyah() {
+    return CacheHelper.getData( key: CacheKeys.lastReadAyah,)??0;
   }
   static bool isLoggedIn(){
     return CacheHelper.getData(key: CacheKeys.uId) !=null;
