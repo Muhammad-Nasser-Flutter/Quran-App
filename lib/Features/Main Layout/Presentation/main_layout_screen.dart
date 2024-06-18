@@ -19,9 +19,6 @@ class _MainLayoutScreenState extends State<MainLayoutScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    AthanCubit.get(context).requestPermissions();
-    AthanCubit.get(context).setupTZ();
   }
 
   @override

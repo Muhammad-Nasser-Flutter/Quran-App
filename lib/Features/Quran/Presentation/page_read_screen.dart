@@ -1,3 +1,4 @@
+import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/ayah_widget_from_juz.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/ayah_widget_from_page.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/quran_listen_top_widget.dart';
@@ -50,65 +51,79 @@ class PageReadScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
-        return PopScope(
-          onPopInvoked: (b) {
-            if (ReadCubit.get(context).audioPlayer.sequence != null) {
-              ReadCubit.get(context).removePlayer();
-            }
-          },
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.r),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, surahIndex) {
-                        return Separator(
-                          margin: 10,
-                        );
-                      },
-                      itemBuilder: (context, surahIndex) {
-                        return Column(
-                          children: [
-                            QuranListenTopWidget(index: getPageSurahList()[surahIndex]["surahNumber"]),
-                            SizedBox(height: 20.h,),
-                            ListView.separated(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return AyahWidgetFromPage(
-                                  ayahNumber: index + 1,
-                                  data: getPageSurahList()[surahIndex],
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Separator(
-                                  margin: 20.h,
-                                );
-                              },
-                              itemCount: getPageSurahList()[surahIndex]
-                              ['numberOfAyahs'],
-                            ),
-                          ],
-                        );
-                      },
-                      itemCount: getPageSurahList().length,
-                    ),
-                  ],
+      body: BlocBuilder<ReadCubit, ReadStates>(
+        builder: (context, state) {
+          var cubit = ReadCubit.get(context);
+          return PopScope(
+            onPopInvoked: (b) {
+              if (ReadCubit.get(context).audioPlayer.sequence != null) {
+                ReadCubit.get(context).removePlayer();
+              }
+            },
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, surahIndex) {
+                          return Separator(
+                            margin: 10,
+                          );
+                        },
+                        itemBuilder: (context, surahIndex) {
+                          return Column(
+                            children: [
+                              QuranListenTopWidget(
+                                  index: getPageSurahList()[surahIndex]
+                                      ["surahNumber"]),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              ListView.separated(
+                                physics:
+                                    const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return AyahWidgetFromPage(
+                                    isPlaying: cubit.currentAyah
+                                                ?.numberInSurah ==
+                                            index + 1 &&
+                                        cubit.currentAyah?.surahNumber ==
+                                            getPageSurahList()[surahIndex]
+                                            ["surahNumber"],
+                                    ayahNumber: index + 1,
+                                    data: getPageSurahList()[surahIndex],
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return Separator(
+                                    margin: 20.h,
+                                  );
+                                },
+                                itemCount: getPageSurahList()[surahIndex]
+                                    ['numberOfAyahs'],
+                              ),
+                            ],
+                          );
+                        },
+                        itemCount: getPageSurahList().length,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }

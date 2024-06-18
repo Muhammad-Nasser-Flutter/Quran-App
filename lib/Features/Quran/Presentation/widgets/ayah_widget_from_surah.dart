@@ -16,12 +16,18 @@ import '../../../../core/utilies/easy_loading.dart';
 
 class AyahWidgetFromSurah extends StatelessWidget {
   const AyahWidgetFromSurah(
-      {super.key, required this.ayahNumber, required this.surahNumber});
+      {super.key,
+      required this.ayahNumber,
+      required this.surahNumber,
+      required this.isPlaying
+      });
   final int ayahNumber;
   final int surahNumber;
+  final bool isPlaying;
 
   @override
   Widget build(BuildContext context) {
+    print(1);
     return BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
       var cubit = ReadCubit.get(context);
       return Column(
@@ -63,54 +69,44 @@ class AyahWidgetFromSurah extends StatelessWidget {
                   iconAsset: Assets.shareIcon,
                   padding: 10,
                 ),
-                if (cubit.audioPlayer.sequence!=null)
-                  StreamBuilder<PositionData>(
-                      stream: cubit.positionDataStream,
-                      builder: (context, snapshot) {
-                        final positionData = snapshot.data;
-                        final mediaItem =
-                            positionData?.sequenceState?.currentSource?.tag;
-                        return IconWidget(
-                          iconAsset:snapshot.data?.sequenceState?.currentSource?.tag?.id!=ayahNumber.toString()
-                              ? Assets.playIcon
-                              : positionData!.playerState.playing&&snapshot.data?.sequenceState?.currentSource?.tag?.id==ayahNumber.toString()
-                                  ? Assets.pauseIcon
-                                  : Assets.playIcon,
-                          padding: 10,
-                          onPressed: () {
-                            if(mediaItem.id != ayahNumber.toString()){
-                              cubit.setCurrentAyah(
-                                context: context,
-                                ayahNumber: ayahNumber,
-                                surahNumber: surahNumber,
-                                startingAyahNumber: 1
-                              );
-
-                            }else{
-                              if (!positionData!.playerState.playing) {
-                                cubit.audioPlayer.play();
-                              } else if (positionData
-                                  .playerState.processingState !=
-                                  ProcessingState.completed) {
-                                cubit.audioPlayer.pause();
-                              }
-                            }
-                          },
-                        );
-                      }),
-                if (cubit.audioPlayer.sequence==null)
+                // if (cubit.audioPlayer.sequence != null )
                   IconWidget(
-                    iconAsset: Assets.playIcon,
+                    iconAsset: (cubit.currentAyah?.numberInSurah == ayahNumber)&& (cubit.currentAyah?.surahNumber == surahNumber)? isPlaying?Assets.pauseIcon:Assets.playIcon: Assets.playIcon,
                     padding: 10,
                     onPressed: () {
-                      cubit.setCurrentAyah(
-                        context: context,
-                        ayahNumber: ayahNumber,
-                        surahNumber: surahNumber,
-                        startingAyahNumber: 1
-                      );
+                      if (!isPlaying) {
+                        ReadCubit.get(context)
+                            .initializeAllAyahsFromSurah(surahNumber);
+                        cubit.setCurrentAyah(
+                          context: context,
+                          ayahNumber: ayahNumber,
+                          surahNumber: surahNumber,
+                          startingAyahNumber: 1,
+                        );
+                      } else {
+                        if (!cubit.audioPlayer.playing) {
+                          cubit.audioPlayer.play();
+                        } else {
+                          cubit.audioPlayer.pause();
+                        }
+                      }
                     },
                   ),
+                // if (cubit.audioPlayer.sequence == null)
+                //   IconWidget(
+                //     iconAsset: Assets.playIcon,
+                //     padding: 10,
+                //     onPressed: () {
+                //       ReadCubit.get(context)
+                //           .initializeAllAyahsFromSurah(surahNumber);
+                //
+                //       cubit.setCurrentAyah(
+                //           context: context,
+                //           ayahNumber: ayahNumber,
+                //           surahNumber: surahNumber,
+                //           startingAyahNumber: 1);
+                //     },
+                //   ),
                 IconWidget(
                   iconAsset: Assets.saveIcon,
                   padding: 10,

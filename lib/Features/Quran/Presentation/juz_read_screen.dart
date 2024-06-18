@@ -1,3 +1,4 @@
+import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/ayah_widget_from_juz.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/quran_listen_top_widget.dart';
 import 'package:Quran/core/theming/colors.dart';
@@ -14,7 +15,7 @@ import '../Bloc/read_cubit.dart';
 import '../Bloc/read_states.dart';
 
 class JuzReadScreen extends StatelessWidget {
-  JuzReadScreen({super.key, required this.juzData});
+  const JuzReadScreen({super.key, required this.juzData});
   final Map<String, dynamic> juzData;
 
   List<Map<String, dynamic>> getJuzSurahList() {
@@ -30,10 +31,6 @@ class JuzReadScreen extends StatelessWidget {
     });
     return mapList;
   }
-
-  final ScrollController _scrollController = ScrollController();
-
-  final List<double> _ayahOffsets = [];
 
   @override
   Widget build(BuildContext context) {
@@ -52,68 +49,79 @@ class JuzReadScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
-        return PopScope(
-          onPopInvoked: (b) {
-            if (ReadCubit.get(context).audioPlayer.sequence != null) {
-              ReadCubit.get(context).removePlayer();
-            }
-          },
-          child: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.r),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, surahIndex) {
-                        return Separator(
-                          margin: 10,
-                        );
-                      },
-                      itemBuilder: (context, surahIndex) {
-                        return Column(
-                          children: [
-                            QuranListenTopWidget(index: getJuzSurahList()[surahIndex]["surahNumber"]),
-                            SizedBox(height: 20.h,),
-                            ListView.separated(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return AyahWidgetFromJuz(
-                                  onRender: (renderBox) {
-                                    _ayahOffsets.add(renderBox.localToGlobal(Offset.zero).dy);
-                                  },
-                                  ayahNumber: index + 1,
-                                  data: getJuzSurahList()[surahIndex],
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Separator(
-                                  margin: 20.h,
-                                );
-                              },
-                              itemCount: getJuzSurahList()[surahIndex]
-                                  ['numberOfAyahs'],
-                            ),
-                          ],
-                        );
-                      },
-                      itemCount: getJuzSurahList().length,
-                    ),
-                  ],
+      body: BlocBuilder<ReadCubit, ReadStates>(
+        builder: (context, state) {
+          var cubit = ReadCubit.get(context);
+          return PopScope(
+            onPopInvoked: (b) {
+              if (ReadCubit.get(context).audioPlayer.sequence != null) {
+                ReadCubit.get(context).removePlayer();
+              }
+            },
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25.r),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, surahIndex) {
+                          return Separator(
+                            margin: 10,
+                          );
+                        },
+                        itemBuilder: (context, surahIndex) {
+                          return Column(
+                            children: [
+                              QuranListenTopWidget(
+                                  index: getJuzSurahList()[surahIndex]
+                                      ["surahNumber"]),
+                              SizedBox(
+                                height: 20.h,
+                              ),
+                              ListView.separated(
+                                physics:
+                                    const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return AyahWidgetFromJuz(
+                                    isPlaying: cubit.currentAyah
+                                                ?.numberInSurah ==
+                                            index + 1 &&
+                                        cubit.currentAyah?.surahNumber ==
+                                            getJuzSurahList()[surahIndex]
+                                                ["surahNumber"],
+                                    ayahNumber: index + 1,
+                                    data: getJuzSurahList()[surahIndex],
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return Separator(
+                                    margin: 20.h,
+                                  );
+                                },
+                                itemCount: getJuzSurahList()[surahIndex]
+                                    ['numberOfAyahs'],
+                              ),
+                            ],
+                          );
+                        },
+                        itemCount: getJuzSurahList().length,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }

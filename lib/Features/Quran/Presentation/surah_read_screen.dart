@@ -1,3 +1,4 @@
+import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/ayah_widget_from_surah.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/quran_listen_top_widget.dart';
@@ -12,21 +13,10 @@ import 'package:quran/quran.dart';
 import '../../../core/widgets/back.dart';
 import '../Bloc/read_states.dart';
 
-class SurahReadScreen extends StatefulWidget {
+class SurahReadScreen extends StatelessWidget {
   const SurahReadScreen({super.key, required this.surahNumber});
   final int surahNumber;
 
-  @override
-  State<SurahReadScreen> createState() => _SurahReadScreenState();
-}
-
-class _SurahReadScreenState extends State<SurahReadScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    ReadCubit.get(context).initializeAllAyahsFromSurah(widget.surahNumber);
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +25,7 @@ class _SurahReadScreenState extends State<SurahReadScreen> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text20(
-          text: getSurahName(widget.surahNumber),
+          text: getSurahName(surahNumber),
           weight: FontWeight.w600,
         ),
         actions: [
@@ -45,6 +35,7 @@ class _SurahReadScreenState extends State<SurahReadScreen> {
         ],
       ),
       body: BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
+        var cubit = ReadCubit.get(context);
         return PopScope(
           onPopInvoked: (b) {
             if (ReadCubit.get(context).audioPlayer.sequence != null) {
@@ -61,25 +52,27 @@ class _SurahReadScreenState extends State<SurahReadScreen> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    QuranListenTopWidget(index: widget.surahNumber),
+                    QuranListenTopWidget(index: surahNumber),
                     SizedBox(
                       height: 20.h,
                     ),
-                    ListView.separated(
+                    ListView.builder(addAutomaticKeepAlives: false,
+
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        return AyahWidgetFromSurah(
+                          return AyahWidgetFromSurah(
+                          isPlaying: cubit.currentAyah?.numberInSurah == index + 1&&cubit.currentAyah?.surahNumber==surahNumber,
                           ayahNumber: index + 1,
-                          surahNumber: widget.surahNumber,
+                          surahNumber: surahNumber,
                         );
                       },
-                      separatorBuilder: (context, index) {
-                        return Separator(
-                          margin: 20.h,
-                        );
-                      },
-                      itemCount: getVerseCount(widget.surahNumber),
+                      // separatorBuilder: (context, index) {
+                      //   return Separator(
+                      //     margin: 20.h,
+                      //   );
+                      // },
+                      itemCount: getVerseCount(surahNumber),
                     ),
                   ],
                 ),

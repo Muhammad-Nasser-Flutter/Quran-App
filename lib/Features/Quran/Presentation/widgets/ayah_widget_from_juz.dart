@@ -15,19 +15,15 @@ import 'package:quran/quran.dart';
 
 class AyahWidgetFromJuz extends StatelessWidget {
   const AyahWidgetFromJuz(
-      {super.key, required this.ayahNumber, required this.data, required this.onRender, });
+      {super.key, required this.ayahNumber, required this.data, required this.isPlaying, });
   final int ayahNumber;
   final Map<String,dynamic> data;
-  final Function(RenderBox) onRender;
-
+  final bool isPlaying ;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          onRender(context.findRenderObject() as RenderBox);
-        });
         return BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
           var cubit = ReadCubit.get(context);
           return Column(
@@ -69,57 +65,41 @@ class AyahWidgetFromJuz extends StatelessWidget {
                       iconAsset: Assets.shareIcon,
                       padding: 10,
                     ),
-                    if (cubit.audioPlayer.sequence != null)
-                      StreamBuilder<PositionData>(
-                          stream: cubit.positionDataStream,
-                          builder: (context, snapshot) {
-                            final positionData = snapshot.data;
-                            final mediaItem =
-                                positionData?.sequenceState?.currentSource?.tag;
-                            return IconWidget(
-                              iconAsset:snapshot.data?.sequenceState?.currentSource?.tag?.id!=(ayahNumber+data["startingAyah"]-1).toString()
-                                  ? Assets.playIcon
-                                  : positionData!.playerState.playing &&data["surahNumber"].toString() ==mediaItem.album.toString()
-                                  ? Assets.pauseIcon
-                                  : Assets.playIcon,
-                              padding: 10,
-                              onPressed: () {
-                                if(mediaItem.id == (ayahNumber+data["startingAyah"]-1).toString() &&data["surahNumber"].toString() ==mediaItem.album.toString()){
-                                  if (!positionData!.playerState.playing) {
-                                    cubit.audioPlayer.play();
-                                  } else if (positionData
-                                      .playerState.processingState !=
-                                      ProcessingState.completed) {
-                                    cubit.audioPlayer.pause();
-                                  }
-                                }else{
-                                  print("${data["surahNumber"]} : ${data["numberOfAyahs"]}");
-                                  cubit.initializeAllAyahsFromJuz(data);
-                                  cubit.setCurrentAyah(
-                                    context: context,
-                                    ayahNumber: (ayahNumber+data["startingAyah"]-1).toInt(),
-                                    surahNumber: data["surahNumber"],
-                                    startingAyahNumber: data["startingAyah"],
-                                  );
-                                }
-                              },
-                            );
-                          }),
-                    if (cubit.audioPlayer.sequence == null)
+                    // if (cubit.audioPlayer.sequence != null)
                       IconWidget(
-                        iconAsset: Assets.playIcon,
+                        iconAsset: (cubit.currentAyah?.numberInSurah == ayahNumber)&& (cubit.currentAyah?.surahNumber == data["surahNumber"])? isPlaying?Assets.pauseIcon:Assets.playIcon: Assets.playIcon,
                         padding: 10,
                         onPressed: () {
-                          cubit.initializeAllAyahsFromJuz(data);
-                          print("${data["surahNumber"]} : ${data["numberOfAyahs"]} : ${(ayahNumber + data["startingAyah"] - 1).toInt()}");
-                          cubit.setCurrentAyah(
-                            context: context,
-                            ayahNumber: (ayahNumber+data["startingAyah"]-1).toInt(),
-                            surahNumber: data["surahNumber"],
-                            startingAyahNumber: data["startingAyah"],
-                          );
+                          if (!isPlaying) {
+                            cubit.setCurrentAyah(
+                              context: context,
+                              ayahNumber: ayahNumber,
+                              surahNumber: data["surahNumber"],
+                              startingAyahNumber: 1,
+                            );
+                          } else {
+                            if (!cubit.audioPlayer.playing) {
+                              cubit.audioPlayer.play();
+                            } else {
+                              cubit.audioPlayer.pause();
+                            }
+                          }
                         },
                       ),
+                    // if (cubit.audioPlayer.sequence == null)
+                    //   IconWidget(
+                    //     iconAsset: Assets.playIcon,
+                    //     padding: 10,
+                    //     onPressed: () {
+                    //       print("${data["surahNumber"]} : ${data["numberOfAyahs"]} : ${(ayahNumber + data["startingAyah"] - 1).toInt()}");
+                    //       cubit.setCurrentAyah(
+                    //         context: context,
+                    //         ayahNumber: (ayahNumber+data["startingAyah"]-1).toInt(),
+                    //         surahNumber: data["surahNumber"],
+                    //         startingAyahNumber: data["startingAyah"],
+                    //       );
+                    //     },
+                    //   ),
                     IconWidget(
                       iconAsset: Assets.saveIcon,
                       padding: 10,

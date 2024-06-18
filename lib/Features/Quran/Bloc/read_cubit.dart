@@ -26,28 +26,29 @@ class ReadCubit extends Cubit<ReadStates> {
   void initializeAllAyahsFromSurah(int surahNumber) {
     surahAyahs = List.generate(
       getVerseCount(surahNumber),
-          (index) {
-
+      (index) {
         // int surahNumber = index ;
         return AudioSource.uri(
           Uri.parse(getAudioURLByVerse(surahNumber, index + 1)),
           tag: MediaItem(
             title: getVerse(surahNumber, index + 1),
             artist: "Mishary Al-Afasy",
-            album: getVerseTranslation(surahNumber, index + 1),
+            album: surahNumber.toString(),
             id: (index + 1).toString(),
           ),
         );
       },
     );
   }
+
   void initializeAllAyahsFromJuz(Map<String, dynamic> data) {
     surahAyahs = List.generate(
       data["numberOfAyahs"],
-          (index) {
+      (index) {
         // int surahNumber = index ;
         return AudioSource.uri(
-          Uri.parse(getAudioURLByVerse(data["surahNumber"], data["startingAyah"] + index )),
+          Uri.parse(getAudioURLByVerse(
+              data["surahNumber"], data["startingAyah"] + index)),
           tag: MediaItem(
             title: getVerse(data["surahNumber"], data["startingAyah"] + index),
             artist: "Mishary Al-Afasy",
@@ -58,13 +59,15 @@ class ReadCubit extends Cubit<ReadStates> {
       },
     );
   }
+
   void initializeAllAyahsFromPage(Map<String, dynamic> data) {
     surahAyahs = List.generate(
       data["numberOfAyahs"],
-          (index) {
+      (index) {
         // int surahNumber = index ;
         return AudioSource.uri(
-          Uri.parse(getAudioURLByVerse(data["surahNumber"], data["startingAyah"] + index )),
+          Uri.parse(getAudioURLByVerse(
+              data["surahNumber"], data["startingAyah"] + index)),
           tag: MediaItem(
             title: getVerse(data["surahNumber"], data["startingAyah"] + index),
             artist: "Mishary Al-Afasy",
@@ -75,28 +78,45 @@ class ReadCubit extends Cubit<ReadStates> {
       },
     );
   }
-  Future<void> playAyah(int ayahNumber,{required int startingAyah,required int surahNumber}) async {
-    try{
-      await audioPlayer.setAudioSource(ConcatenatingAudioSource(children: surahAyahs));
 
-      int currentPlayingIndex = audioPlayer.currentIndex ?? 0;
-      if (ayahNumber - startingAyah != currentPlayingIndex) {
-        // Seek only if the selected surah is different from the currently playing one
-        await audioPlayer.seek(Duration.zero, index: ayahNumber - startingAyah);
-      }
+  Future<void> playAyah(int ayahNumber,
+      {required int startingAyah,
+      int? currentSurahNumber,
+      required int surahNumber}) async {
+    print("xx");
+    currentAyah = AyahModel(
+        numberInSurah: ayahNumber,
+        name: getVerse(surahNumber, ayahNumber),
+        translationInEnglish: getVerseTranslation(surahNumber, ayahNumber),
+        revelationType: getPlaceOfRevelation(surahNumber),
+        surahNumber: surahNumber);
+    print("yy");
+    try {
+      audioPlayer.sequence?.clear();
+      print("zz");
+      // 2. Create AudioSource for the selected ayah
+      final ayahAudioSource = AudioSource.uri(
+        Uri.parse(getAudioURLByVerse(surahNumber, ayahNumber)),
+        tag: MediaItem(
+          title: getVerse(surahNumber, ayahNumber),
+          artist: "Mishary Al-Afasy",
+          album: surahNumber.toString(),
+          id: ayahNumber.toString(),
+        ),
+      );
 
-      // Start or resume playback
-      if (audioPlayer.playing) {
-        audioPlayer.pause(); // Pause if already playing the same surah
-      } else {
-        audioPlayer.play();
-      }
+      // 3. Set the new AudioSource and play
+      await audioPlayer.setAudioSource(ayahAudioSource);
+      audioPlayer.play();
+      print("aaa");
       hideLoading();
       print("Hide loading");
-    }catch(e){
+      emit(SetAyahSuccessStates());
+    } catch (e) {
+      print(e.toString());
       hideLoading();
+      emit(SetAyahErrorStates());
     }
-
   }
 
   Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
@@ -117,14 +137,21 @@ class ReadCubit extends Cubit<ReadStates> {
       );
 
   AyahModel? currentAyah;
-  void setCurrentAyah({required int ayahNumber, required int surahNumber,required context,required int startingAyahNumber}) {
+  void setCurrentAyah(
+      {required int ayahNumber,
+      required int surahNumber,
+      required context,
+      required int startingAyahNumber}) {
     showLoading();
     print("Showed loading");
-    if(ListenCubit.get(context).audioPlayer.sequence!=null){
+
+    if (ListenCubit.get(context).audioPlayer.sequence != null) {
       ListenCubit.get(context).audioPlayer.stop();
       print("audio player disposed");
     }
+    if(audioPlayer.playing) {
       removePlayer();
+    }
     print("xx");
     print(ayahNumber);
     currentAyah = AyahModel(
@@ -135,15 +162,15 @@ class ReadCubit extends Cubit<ReadStates> {
       surahNumber: surahNumber,
     );
     print(currentAyah?.toJson().toString());
-    playAyah(ayahNumber,startingAyah: startingAyahNumber,surahNumber: surahNumber);
-    emit(SetAyahStates());
+    playAyah(ayahNumber,
+        startingAyah: startingAyahNumber, surahNumber: surahNumber);
   }
 
   void removeCurrentAyah() {
     currentAyah = null;
     audioPlayer.stop();
-
   }
+
   void removePlayer() {
     currentAyah = null;
     audioPlayer.stop();

@@ -12,4 +12,5 @@ class GetQuranSurahsErrorState extends ReadStates{}
 
 
 class InitAudioHandlerSuccessFromReadState extends ReadStates{}
-class SetAyahStates extends ReadStates{}
+class SetAyahSuccessStates extends ReadStates{}
+class SetAyahErrorStates extends ReadStates{}
