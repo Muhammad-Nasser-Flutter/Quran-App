@@ -85,7 +85,7 @@ class JuzReadScreen extends StatelessWidget {
                               SizedBox(
                                 height: 20.h,
                               ),
-                              ListView.separated(
+                              ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
@@ -98,11 +98,6 @@ class JuzReadScreen extends StatelessWidget {
                                                     ["surahNumber"],
                                     ayahNumber: index + 1,
                                     data: getJuzSurahList()[surahIndex],
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return Separator(
-                                    margin: 20.h,
                                   );
                                 },
                                 itemCount: getJuzSurahList()[surahIndex]

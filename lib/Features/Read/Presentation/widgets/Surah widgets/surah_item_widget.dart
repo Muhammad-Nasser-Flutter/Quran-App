@@ -84,7 +84,7 @@ class SurahItemWidget extends StatelessWidget {
                           SizedBox(
                             width: 15.w,
                           ),
-                          if (listenCubit.audioPlayer.sequence != null)
+                          if (listenCubit.audioPlayer.sequence != null&&!fromRead)
                             StreamBuilder<PositionData>(
                                 stream: listenCubit.positionDataStream,
                                 builder: (context, snapshot) {

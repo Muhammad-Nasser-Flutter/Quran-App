@@ -21,7 +21,6 @@ class Assets {
   static const String loadingLottie = "assets/lottie/loading_lottie.json";
   static const String readTopPoster = "assets/images/Read top poster.png";
   static const String headphonesImage = "assets/images/headphones.png";
-  static const String surahBorderImage = "assets/images/SurahBorder.png";
   static const String quranListenScreenImage = "assets/images/Quran_listen_screen_image.png";
   static const String listenTopPoster = "assets/images/Listen Top Poster.png";
 }

@@ -29,130 +29,129 @@ class AyahWidgetFromJuz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
-          var cubit = ReadCubit.get(context);
-          return Column(
-            children: [
-              Container(
-                // padding: EdgeInsets.all(8.r),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFf3f3f5),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Row(
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.circle,
-                            color: AppColors.primaryColor,
-                            size: 34.r,
-                          ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
+        var cubit = ReadCubit.get(context);
+        return Column(
+          children: [
+            Container(
+              // padding: EdgeInsets.all(8.r),
+              decoration: BoxDecoration(
+                color: const Color(0xFFf3f3f5),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              child: Row(
+                children: [
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.circle,
+                          color: AppColors.primaryColor,
+                          size: 34.r,
                         ),
-                        Text14(
-                          text: (ayahNumber + data["startingAyah"] - 1)
-                              .toString(),
-                          textColor: Colors.white,
-                          weight: FontWeight.w400,
-                        ),
-                      ],
-                    ),
-                    if (isSajdahVerse(data["surahNumber"],
-                        (ayahNumber + data["startingAyah"] - 1).toInt()))
-                      IconWidget(
-                        iconAsset: Assets.sagdaIcon,
-                        size: 25.r,
-                        color: AppColors.primaryColor,
                       ),
-                    const Spacer(),
-                    IconWidget(
-                      iconAsset: Assets.shareIcon,
-                      padding: 10,
-                      size: 25.r,
-                      color: AppColors.primaryColor,
-                      onPressed: () {
-                        Share.share(getVerse(data["surahNumber"], (data["startingAyah"]+ayahNumber-1)));
-                      },
-                    ),
-                    IconWidget(
-                      iconAsset:
-                          (cubit.currentAyah?.numberInSurah == ayahNumber) &&
-                                  (cubit.currentAyah?.surahNumber ==
-                                      data["surahNumber"])
-                              ? isPlaying
-                                  ? Assets.pauseIcon
-                                  : Assets.playIcon
-                              : Assets.playIcon,
-                      padding: 10,
-                      onPressed: () {
-                        if (!isPlaying) {
-                          cubit.setCurrentAyah(
-                            context: context,
-                            ayahNumber: ayahNumber,
-                            surahNumber: data["surahNumber"],
-                            startingAyahNumber: 1,
-                          );
-                        } else {
-                          if (!cubit.audioPlayer.playing) {
-                            cubit.audioPlayer.play();
-                          } else {
-                            cubit.audioPlayer.pause();
-                          }
-                        }
-                      },
-                    ),
-                    IconWidget(
-                      iconAsset: CacheHelper.lastReadAyah() == (data["startingAyah"]+ayahNumber-1) &&
-                              CacheHelper.lastReadSurah() == data["surahNumber"]
-                          ? Assets.saveFillIcon
-                          : Assets.saveIcon,
-                      padding: 10,
-                      size: 25.r,
-                      color: AppColors.primaryColor,
-                      onPressed: () {
-                        cubit.setLastReadSurahAndAyah(
-                            data["surahNumber"], data["startingAyah"]+ayahNumber-1);
-                        print("Surah: ${data["surahNumber"]} Ayah: ${data["startingAyah"]+ayahNumber-1}");
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Container(
-                alignment: AlignmentDirectional.centerEnd,
-                child: Text18Ar(
-                  text: getVerse(data["surahNumber"],
-                      (ayahNumber + data["startingAyah"] - 1).toInt()),
-                  height: 1.8,
-                  weight: FontWeight.w600,
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Container(
-                alignment: AlignmentDirectional.centerStart,
-                child: Text16(
-                  text: getVerseTranslation(
-                    data["surahNumber"],
-                    (ayahNumber + data["startingAyah"] - 1).toInt(),
+                      Text14(
+                        text: (ayahNumber + data["startingAyah"] - 1)
+                            .toString(),
+                        textColor: Colors.white,
+                        weight: FontWeight.w400,
+                      ),
+                    ],
                   ),
-                  weight: FontWeight.w500,
-                  textColor: AppColors.primaryColor,
-                ),
+                  if (isSajdahVerse(data["surahNumber"],
+                      (ayahNumber + data["startingAyah"] - 1).toInt()))
+                    IconWidget(
+                      iconAsset: Assets.sagdaIcon,
+                      size: 25.r,
+                      color: AppColors.primaryColor,
+                    ),
+                  const Spacer(),
+                  IconWidget(
+                    iconAsset: Assets.shareIcon,
+                    padding: 10,
+                    size: 25.r,
+                    color: AppColors.primaryColor,
+                    onPressed: () {
+                      Share.share(getVerse(data["surahNumber"], (data["startingAyah"]+ayahNumber-1)));
+                    },
+                  ),
+                  IconWidget(
+                    iconAsset:
+                        (cubit.currentAyah?.numberInSurah == ayahNumber) &&
+                                (cubit.currentAyah?.surahNumber ==
+                                    data["surahNumber"])
+                            ? isPlaying
+                                ? Assets.pauseIcon
+                                : Assets.playIcon
+                            : Assets.playIcon,
+                    padding: 10,
+                    onPressed: () {
+                      if (!isPlaying) {
+                        cubit.setCurrentAyah(
+                          context: context,
+                          ayahNumber: ayahNumber,
+                          surahNumber: data["surahNumber"],
+                          startingAyahNumber: 1,
+                        );
+                      } else {
+                        if (!cubit.audioPlayer.playing) {
+                          cubit.audioPlayer.play();
+                        } else {
+                          cubit.audioPlayer.pause();
+                        }
+                      }
+                    },
+                  ),
+                  IconWidget(
+                    iconAsset: CacheHelper.lastReadAyah() == (data["startingAyah"]+ayahNumber-1) &&
+                            CacheHelper.lastReadSurah() == data["surahNumber"]
+                        ? Assets.saveFillIcon
+                        : Assets.saveIcon,
+                    padding: 10,
+                    size: 25.r,
+                    color: AppColors.primaryColor,
+                    onPressed: () {
+                      cubit.setLastReadSurahAndAyah(
+                          data["surahNumber"], data["startingAyah"]+ayahNumber-1);
+                      print("Surah: ${data["surahNumber"]} Ayah: ${data["startingAyah"]+ayahNumber-1}");
+                    },
+                  ),
+                ],
               ),
-            ],
-          );
-        });
-      },
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Container(
+              alignment: AlignmentDirectional.centerEnd,
+              child: Text18Ar(
+                text: getVerse(data["surahNumber"],
+                    (ayahNumber + data["startingAyah"] - 1).toInt()),
+                height: 1.8,
+                weight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Container(
+              alignment: AlignmentDirectional.centerStart,
+              child: Text16(
+                text: getVerseTranslation(
+                  data["surahNumber"],
+                  (ayahNumber + data["startingAyah"] - 1).toInt(),
+                ),
+                weight: FontWeight.w500,
+                textColor: AppColors.primaryColor,
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }
