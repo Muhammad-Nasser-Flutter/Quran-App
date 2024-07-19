@@ -89,7 +89,8 @@ class AyahWidgetFromSurah extends StatelessWidget {
                             : Assets.playIcon,
                         padding: 10,
                         onPressed: () {
-                          if(status == ConnectivityStatus.online) {
+                          print(status.toString());
+                          if(status != ConnectivityStatus.offline) {
                             if (!isPlaying) {
                               cubit.setCurrentAyah(
                                 context: context,
