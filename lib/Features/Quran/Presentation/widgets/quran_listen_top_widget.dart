@@ -13,64 +13,75 @@ class QuranListenTopWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryColor,
-            spreadRadius: -10,
-            blurRadius: 15.r,
-            offset: const Offset(0, 10),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 10.h,
+        ),
+        Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primaryColor,
+                spreadRadius: -10,
+                blurRadius: 15.r,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Image.asset(Assets.quranListenScreenImage),
-          Positioned(
-            top: 25.r,
-            child: Column(
-              children: [
-                Text26(
-                  text: getSurahName(index),
-                  textColor: Colors.white,
-                  weight: FontWeight.w500,
-                  spacing: 1,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.asset(Assets.quranListenScreenImage),
+              Positioned(
+                top: 25.r,
+                child: Column(
+                  children: [
+                    Text26(
+                      text: getSurahName(index),
+                      textColor: Colors.white,
+                      weight: FontWeight.w500,
+                      spacing: 1,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text18Ar(
+                      text: getSurahNameEnglish(index),
+                      spacing: 0,
+                      textColor: Colors.white,
+                      weight: FontWeight.w600,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Container(
+                      height: 1,
+                      width: MediaQuery.sizeOf(context).width * 0.6,
+                      color: Colors.white.withOpacity(0.5),
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Text14(
+                      text: "MECCAN - ${getVerseCount(index)} Verses",
+                      textColor: Colors.white,
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    SvgPicture.asset(Assets.basmala),
+                  ],
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                Text18Ar(
-                  text: getSurahNameEnglish(index),
-                  spacing: 0,
-                  textColor: Colors.white,
-                  weight: FontWeight.w600,
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Container(
-                  height: 1,
-                  width: MediaQuery.sizeOf(context).width * 0.6,
-                  color: Colors.white.withOpacity(0.5),
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                Text14(
-                  text: "MECCAN - ${getVerseCount(index)} Verses",
-                  textColor: Colors.white,
-                ),
-                SizedBox(
-                  height: 30.h,
-                ),
-                SvgPicture.asset(Assets.basmala),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 20.h,
+        ),
+      ],
     );
   }
 }

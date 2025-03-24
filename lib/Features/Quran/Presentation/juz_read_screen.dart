@@ -59,58 +59,41 @@ class JuzReadScreen extends StatelessWidget {
               }
             },
             child: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.r),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+              child: ListView.separated(
+                padding: EdgeInsets.only(
+                  top: 20.h,
+                  left: 25.r,
+                  right: 25.r,
+                ),
+                separatorBuilder: (context, surahIndex) {
+                  return Separator(
+                    margin: 10,
+                  );
+                },
+                itemBuilder: (context, surahIndex) {
+                  return Column(
                     children: [
+                      QuranListenTopWidget(index: getJuzSurahList()[surahIndex]["surahNumber"]),
                       SizedBox(
                         height: 20.h,
                       ),
-                      ListView.separated(
-                        shrinkWrap: true,
+                      ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
-                        separatorBuilder: (context, surahIndex) {
-                          return Separator(
-                            margin: 10,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return AyahWidgetFromJuz(
+                            isPlaying: cubit.currentAyah?.numberInSurah == index + 1 &&
+                                cubit.currentAyah?.surahNumber == getJuzSurahList()[surahIndex]["surahNumber"],
+                            ayahNumber: index + 1,
+                            data: getJuzSurahList()[surahIndex],
                           );
                         },
-                        itemBuilder: (context, surahIndex) {
-                          return Column(
-                            children: [
-                              QuranListenTopWidget(
-                                  index: getJuzSurahList()[surahIndex]
-                                      ["surahNumber"]),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return AyahWidgetFromJuz(
-                                    isPlaying:
-                                        cubit.currentAyah?.numberInSurah ==
-                                                index + 1 &&
-                                            cubit.currentAyah?.surahNumber ==
-                                                getJuzSurahList()[surahIndex]
-                                                    ["surahNumber"],
-                                    ayahNumber: index + 1,
-                                    data: getJuzSurahList()[surahIndex],
-                                  );
-                                },
-                                itemCount: getJuzSurahList()[surahIndex]
-                                    ['numberOfAyahs'],
-                              ),
-                            ],
-                          );
-                        },
-                        itemCount: getJuzSurahList().length,
+                        itemCount: getJuzSurahList()[surahIndex]['numberOfAyahs'],
                       ),
                     ],
-                  ),
-                ),
+                  );
+                },
+                itemCount: getJuzSurahList().length,
               ),
             ),
           );

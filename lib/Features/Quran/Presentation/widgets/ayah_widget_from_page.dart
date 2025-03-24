@@ -1,20 +1,15 @@
-import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
 import 'package:Quran/Features/Quran/Bloc/read_states.dart';
 import 'package:Quran/core/theming/assets.dart';
 import 'package:Quran/core/theming/colors.dart';
-import 'package:Quran/core/utilies/easy_loading.dart';
 import 'package:Quran/core/widgets/custom_texts.dart';
 import 'package:Quran/core/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:internet_connectivity_checker/internet_connectivity_checker.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:quran/quran.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../../../../core/cache_helper/cache_helper.dart';
 import '../../../../core/functions/flutter_toast.dart';
 
@@ -32,7 +27,7 @@ class AyahWidgetFromPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical:10.r),
+      padding: EdgeInsets.symmetric(vertical: 10.r),
       child: BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
         var cubit = ReadCubit.get(context);
         return Column(
@@ -63,8 +58,7 @@ class AyahWidgetFromPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (isSajdahVerse(data["surahNumber"],
-                      (ayahNumber + data["startingAyah"] - 1).toInt()))
+                  if (isSajdahVerse(data["surahNumber"], (ayahNumber + data["startingAyah"] - 1).toInt()))
                     IconWidget(
                       iconAsset: Assets.sagdaIcon,
                       size: 25.r,
@@ -77,47 +71,41 @@ class AyahWidgetFromPage extends StatelessWidget {
                     size: 25.r,
                     color: AppColors.primaryColor,
                     onPressed: () {
-                      Share.share(getVerse(data["surahNumber"], (data["startingAyah"]+ayahNumber-1)));
+                      Share.share(getVerse(data["surahNumber"], (data["startingAyah"] + ayahNumber - 1)));
                     },
                   ),
-                  ConnectivityBuilder(
-                    builder:(status){
-                      return IconWidget(
-                        iconAsset: (cubit.currentAyah?.numberInSurah == ayahNumber) &&
+                  IconWidget(
+                    iconAsset: (cubit.currentAyah?.numberInSurah == ayahNumber) &&
                             (cubit.currentAyah?.surahNumber == data["surahNumber"])
-                            ? isPlaying&&cubit.audioPlayer.playing
+                        ? isPlaying && cubit.audioPlayer.playing
                             ? Assets.pauseIcon
                             : Assets.playIcon
-                            : Assets.playIcon,
-                        padding: 10,
-                        onPressed: () {
-                          if(status == ConnectivityStatus.online) {
-                            if (!isPlaying) {
-                              cubit.setCurrentAyah(
-                                context: context,
-                                ayahNumber: ayahNumber,
-                                surahNumber: data["surahNumber"],
-                                startingAyahNumber: 1,
-                              );
-                            } else {
-                              if (!cubit.audioPlayer.playerState.playing) {
-                                cubit.resumePlayer();
-                              } else {
-                                cubit.pausePlayer();
-                              }
-                            }
-                          }else{
-                            customToast(msg: "No Internet Connection", color: AppColors.primaryColor);
-
+                        : Assets.playIcon,
+                    padding: 10,
+                    onPressed: () async{
+                      final checker = InternetConnectionChecker.createInstance();
+                      if (await checker.hasConnection) {
+                        if (!isPlaying) {
+                          cubit.setCurrentAyah(
+                            context: context,
+                            ayahNumber: ayahNumber,
+                            surahNumber: data["surahNumber"],
+                            startingAyahNumber: 1,
+                          );
+                        } else {
+                          if (!cubit.audioPlayer.playerState.playing) {
+                            cubit.resumePlayer();
+                          } else {
+                            cubit.pausePlayer();
                           }
-
-                        },
-                      );
+                        }
+                      } else {
+                        customToast(msg: "No Internet Connection", color: AppColors.primaryColor);
+                      }
                     },
                   ),
-
                   IconWidget(
-                    iconAsset: CacheHelper.lastReadAyah() == (data["startingAyah"]+ayahNumber-1) &&
+                    iconAsset: CacheHelper.lastReadAyah() == (data["startingAyah"] + ayahNumber - 1) &&
                             CacheHelper.lastReadSurah() == data["surahNumber"]
                         ? Assets.saveFillIcon
                         : Assets.saveIcon,
@@ -125,8 +113,7 @@ class AyahWidgetFromPage extends StatelessWidget {
                     size: 25.r,
                     color: AppColors.primaryColor,
                     onPressed: () {
-                      cubit.setLastReadSurahAndAyah(
-                          data["surahNumber"], data["startingAyah"]+ayahNumber-1);
+                      cubit.setLastReadSurahAndAyah(data["surahNumber"], data["startingAyah"] + ayahNumber - 1);
                     },
                   ),
                 ],
@@ -138,8 +125,7 @@ class AyahWidgetFromPage extends StatelessWidget {
             Container(
               alignment: AlignmentDirectional.centerEnd,
               child: Text18Ar(
-                text: getVerse(data["surahNumber"],
-                    (ayahNumber + data["startingAyah"] - 1).toInt()),
+                text: getVerse(data["surahNumber"], (ayahNumber + data["startingAyah"] - 1).toInt()),
                 height: 1.8,
                 weight: FontWeight.w600,
               ),

@@ -61,59 +61,37 @@ class PageReadScreen extends StatelessWidget {
               }
             },
             child: SafeArea(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.r),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+              child: ListView.separated(
+                padding: EdgeInsets.only(left: 25.r, right: 25.r, top: 20.h),
+                separatorBuilder: (context, surahIndex) {
+                  return Separator(
+                    margin: 10,
+                  );
+                },
+                itemBuilder: (context, surahIndex) {
+                  return Column(
                     children: [
+                      QuranListenTopWidget(index: getPageSurahList()[surahIndex]["surahNumber"]),
                       SizedBox(
                         height: 20.h,
                       ),
-                      ListView.separated(
-                        shrinkWrap: true,
+                      ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
-                        separatorBuilder: (context, surahIndex) {
-                          return Separator(
-                            margin: 10,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return AyahWidgetFromPage(
+                            isPlaying: cubit.currentAyah?.numberInSurah == index + 1 &&
+                                cubit.currentAyah?.surahNumber == getPageSurahList()[surahIndex]["surahNumber"],
+                            ayahNumber: index + 1,
+                            data: getPageSurahList()[surahIndex],
                           );
                         },
-                        itemBuilder: (context, surahIndex) {
-                          return Column(
-                            children: [
-                              QuranListenTopWidget(
-                                  index: getPageSurahList()[surahIndex]
-                                      ["surahNumber"]),
-                              SizedBox(
-                                height: 20.h,
-                              ),
-                              ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return AyahWidgetFromPage(
-                                    isPlaying:
-                                        cubit.currentAyah?.numberInSurah ==
-                                                index + 1 &&
-                                            cubit.currentAyah?.surahNumber ==
-                                                getPageSurahList()[surahIndex]
-                                                    ["surahNumber"],
-                                    ayahNumber: index + 1,
-                                    data: getPageSurahList()[surahIndex],
-                                  );
-                                },
-
-                                itemCount: getPageSurahList()[surahIndex]
-                                    ['numberOfAyahs'],
-                              ),
-                            ],
-                          );
-                        },
-                        itemCount: getPageSurahList().length,
+                        itemCount: getPageSurahList()[surahIndex]['numberOfAyahs'],
                       ),
                     ],
-                  ),
-                ),
+                  );
+                },
+                itemCount: getPageSurahList().length,
               ),
             ),
           );

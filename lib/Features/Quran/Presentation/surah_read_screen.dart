@@ -43,33 +43,30 @@ class SurahReadScreen extends StatelessWidget {
             }
           },
           child: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25.r),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    QuranListenTopWidget(index: surahNumber),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    ListView.builder(addAutomaticKeepAlives: false,
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25.r),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      // physics: const NeverScrollableScrollPhysics(),
+                      // shrinkWrap: true,
                       itemBuilder: (context, index) {
-                          return AyahWidgetFromSurah(
-                          isPlaying: cubit.currentAyah?.numberInSurah == index + 1&&cubit.currentAyah?.surahNumber==surahNumber,
-                          ayahNumber: index + 1,
+                        if (index == 0) {
+                          return QuranListenTopWidget(index: surahNumber);
+                        }
+                        return AyahWidgetFromSurah(
+                          isPlaying: (cubit.currentAyah?.numberInSurah == index ) &&
+                              (cubit.currentAyah?.surahNumber == surahNumber),
+                          ayahNumber: index ,
                           surahNumber: surahNumber,
                         );
                       },
-                      itemCount: getVerseCount(surahNumber),
+                      itemCount: getVerseCount(surahNumber) + 1,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
