@@ -1,8 +1,6 @@
 import 'package:Quran/core/helpers/extensions.dart';
 import 'package:Quran/core/routing/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../../../../core/widgets/separator.dart';
 import 'juz_item_widget.dart';
 

@@ -2,6 +2,7 @@ import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
 import 'package:Quran/Features/Quran/Bloc/read_states.dart';
 import 'package:Quran/core/theming/assets.dart';
 import 'package:Quran/core/theming/colors.dart';
+import 'package:Quran/core/utilies/easy_loading.dart';
 import 'package:Quran/core/widgets/custom_texts.dart';
 import 'package:Quran/core/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,9 @@ class AyahWidgetFromPage extends StatelessWidget {
                             : Assets.playIcon
                         : Assets.playIcon,
                     padding: 10,
-                    onPressed: () async{
+                    onPressed: () async {
+                      showLoading();
+
                       final checker = InternetConnectionChecker.createInstance();
                       if (await checker.hasConnection) {
                         if (!isPlaying) {

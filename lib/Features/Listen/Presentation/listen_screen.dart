@@ -1,8 +1,8 @@
 import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
 import 'package:Quran/Features/Listen/Bloc/listen_states.dart';
 import 'package:Quran/Features/Listen/models/position_data.dart';
+import 'package:Quran/core/widgets/search_icon.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,23 +34,22 @@ class _ListenScreenState extends State<ListenScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconWidget(
-          iconAsset: Assets.menuIcon,
-          onPressed: () {},
-          color: AppColors.primaryColor,
-          padding: 15,
-        ),
+        // leading: IconWidget(
+        //   iconAsset: Assets.menuIcon,
+        //   onPressed: () {},
+        //   color: AppColors.primaryColor,
+        //   padding: 15,
+        // ),
+        automaticallyImplyLeading: false,
         title: Text20(
           text: "Quran Listening",
           weight: FontWeight.w600,
         ),
         centerTitle: true,
         actions: [
-          IconWidget(
-            iconAsset: Assets.searchIcon,
-            onPressed: () {},
-            color: AppColors.primaryColor,
-            padding: 15,
+          SearchWidget(),
+          SizedBox(
+            width: 15.w,
           ),
         ],
       ),
@@ -161,6 +160,9 @@ class _ListenScreenState extends State<ListenScreen> {
                                                   Duration.zero,
                                               onSeek:
                                                   listenCubit.audioPlayer.seek,
+                                            ),
+                                            SizedBox(
+                                              height: 10.h,
                                             ),
                                             Container(
                                               decoration: BoxDecoration(

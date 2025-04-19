@@ -1,8 +1,10 @@
 import 'package:Quran/Features/Quran/Presentation/juz_read_screen.dart';
 import 'package:Quran/Features/Quran/Presentation/page_read_screen.dart';
 import 'package:Quran/Features/Quran/Presentation/surah_read_screen.dart';
-import 'package:Quran/Features/Read/Presentation/widgets/Page%20Widgets/page_item_widget.dart';
+import 'package:Quran/Features/search/Bloc/cubit/search_cubit_cubit.dart';
+import 'package:Quran/Features/search/search_screen.dart';
 import 'package:Quran/core/routing/routes.dart';
+import 'package:Quran/core/routing/routes_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
@@ -11,7 +13,6 @@ import '../../Features/Athan/Presentation/athan_screen.dart';
 import '../../Features/Listen/Presentation/listen_screen.dart';
 import '../../Features/Main Layout/Bloc/main_layout_cubit.dart';
 import '../../Features/Main Layout/Presentation/main_layout_screen.dart';
-import '../../Features/Quran/Bloc/read_cubit.dart';
 import '../../Features/Read/Presentation/read_screen.dart';
 
 class AppRouter {
@@ -31,7 +32,6 @@ class AppRouter {
           settings: settings,
         );
       case Routes.quranScreen:
-        final args = settings.arguments as int;
         return PageTransition(
           child: const ReadScreen(),
           type: PageTransitionType.fade,
@@ -39,9 +39,11 @@ class AppRouter {
           settings: settings,
         );
       case Routes.surahReadScreen:
+        final SurahReadScreenArgs args = settings.arguments as SurahReadScreenArgs;
         return PageTransition(
           child: SurahReadScreen(
-            surahNumber: settings.arguments as int,
+            scrollToAyahIndex: args.scrollToAyahIndex,
+            surahNumber: args.surahNumber,
           ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,
@@ -60,6 +62,16 @@ class AppRouter {
         return PageTransition(
           child: PageReadScreen(
             pageNumber: arguments as int,
+          ),
+          type: PageTransitionType.fade,
+          alignment: Alignment.center,
+          settings: settings,
+        );
+      case Routes.searchScreen:
+        return PageTransition(
+          child: BlocProvider(
+            create: (context) => SearchCubit(),
+            child: const SearchScreen(),
           ),
           type: PageTransitionType.fade,
           alignment: Alignment.center,

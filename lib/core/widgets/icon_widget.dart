@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class IconWidget extends StatelessWidget {
-  IconWidget({
+  const IconWidget({
     super.key,
     this.onPressed,
     required this.iconAsset,
@@ -11,11 +11,11 @@ class IconWidget extends StatelessWidget {
     this.padding = 10,
     this.color,
   });
-  VoidCallback? onPressed;
+  final VoidCallback? onPressed;
   final String iconAsset;
-  double? size;
-  double padding;
-  Color? color;
+  final double? size;
+  final double padding;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {

@@ -1,22 +1,51 @@
-import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/ayah_widget_from_surah.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/quran_listen_top_widget.dart';
-import 'package:Quran/core/theming/assets.dart';
 import 'package:Quran/core/widgets/custom_texts.dart';
-import 'package:Quran/core/widgets/icon_widget.dart';
-import 'package:Quran/core/widgets/separator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quran/quran.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../core/widgets/back.dart';
 import '../Bloc/read_states.dart';
 
-class SurahReadScreen extends StatelessWidget {
-  const SurahReadScreen({super.key, required this.surahNumber});
+class SurahReadScreen extends StatefulWidget {
+  const SurahReadScreen({
+    super.key,
+    required this.surahNumber,
+    this.scrollToAyahIndex = 0,
+  });
   final int surahNumber;
+  final int scrollToAyahIndex;
 
+  @override
+  State<SurahReadScreen> createState() => _SurahReadScreenState();
+}
+
+class _SurahReadScreenState extends State<SurahReadScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Delay to wait for the widgets to render
+    if (widget.scrollToAyahIndex != 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        scrollToSavedAyah();
+      });
+    }
+  }
+
+  final itemKeyList = <GlobalKey>[];
+
+  void scrollToSavedAyah() {
+    _scrollController.scrollTo(
+      index: widget.scrollToAyahIndex,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  final ItemScrollController _scrollController = ItemScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,14 +54,10 @@ class SurahReadScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text20(
-          text: getSurahName(surahNumber),
+          text: getSurahName(widget.surahNumber),
           weight: FontWeight.w600,
         ),
-        actions: [
-          IconWidget(
-            iconAsset: Assets.searchIcon,
-          ),
-        ],
+
       ),
       body: BlocBuilder<ReadCubit, ReadStates>(builder: (context, state) {
         var cubit = ReadCubit.get(context);
@@ -49,21 +74,26 @@ class SurahReadScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                      // physics: const NeverScrollableScrollPhysics(),
-                      // shrinkWrap: true,
+                    child: ScrollablePositionedList.builder(
+                      itemScrollController: _scrollController,
                       itemBuilder: (context, index) {
+                        final key = GlobalKey();
+                        itemKeyList.add(key);
                         if (index == 0) {
-                          return QuranListenTopWidget(index: surahNumber);
+                          return QuranListenTopWidget(
+                            index: widget.surahNumber,
+                            key: key,
+                          );
                         }
                         return AyahWidgetFromSurah(
-                          isPlaying: (cubit.currentAyah?.numberInSurah == index ) &&
-                              (cubit.currentAyah?.surahNumber == surahNumber),
-                          ayahNumber: index ,
-                          surahNumber: surahNumber,
+                          key: key,
+                          isPlaying: (cubit.currentAyah?.numberInSurah == index) &&
+                              (cubit.currentAyah?.surahNumber == widget.surahNumber),
+                          ayahNumber: index,
+                          surahNumber: widget.surahNumber,
                         );
                       },
-                      itemCount: getVerseCount(surahNumber) + 1,
+                      itemCount: getVerseCount(widget.surahNumber) + 1,
                     ),
                   ),
                 ],

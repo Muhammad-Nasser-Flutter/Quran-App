@@ -3,21 +3,15 @@ import 'package:Quran/Features/Quran/Bloc/read_states.dart';
 import 'package:Quran/core/functions/flutter_toast.dart';
 import 'package:Quran/core/theming/colors.dart';
 import 'package:Quran/core/utilies/easy_loading.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:quran/quran.dart';
 
-import '../../../core/Api/endPoints.dart';
-import '../../../core/Api/my_dio.dart';
 import '../../../core/cache_helper/cache_helper.dart';
 import '../../../core/cache_helper/cache_values.dart';
 import '../../Listen/models/position_data.dart';
 import '../models/ayah_model.dart';
-import '../models/quran_model.dart';
-import '../models/surah_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ReadCubit extends Cubit<ReadStates> {
@@ -32,6 +26,7 @@ class ReadCubit extends Cubit<ReadStates> {
     CacheHelper.saveData(key: CacheKeys.lastReadAyah, value: ayahNumber);
     emit(SetLastReadState());
   }
+
   void initializeAllAyahsFromSurah(int surahNumber) {
     surahAyahs = List.generate(
       getVerseCount(surahNumber),
@@ -56,8 +51,7 @@ class ReadCubit extends Cubit<ReadStates> {
       (index) {
         // int surahNumber = index ;
         return AudioSource.uri(
-          Uri.parse(getAudioURLByVerse(
-              data["surahNumber"], data["startingAyah"] + index)),
+          Uri.parse(getAudioURLByVerse(data["surahNumber"], data["startingAyah"] + index)),
           tag: MediaItem(
             title: getVerse(data["surahNumber"], data["startingAyah"] + index),
             artist: "Mishary Al-Afasy",
@@ -75,8 +69,7 @@ class ReadCubit extends Cubit<ReadStates> {
       (index) {
         // int surahNumber = index ;
         return AudioSource.uri(
-          Uri.parse(getAudioURLByVerse(
-              data["surahNumber"], data["startingAyah"] + index)),
+          Uri.parse(getAudioURLByVerse(data["surahNumber"], data["startingAyah"] + index)),
           tag: MediaItem(
             title: getVerse(data["surahNumber"], data["startingAyah"] + index),
             artist: "Mishary Al-Afasy",
@@ -89,9 +82,7 @@ class ReadCubit extends Cubit<ReadStates> {
   }
 
   Future<void> playAyah(int ayahNumber,
-      {required int startingAyah,
-      int? currentSurahNumber,
-      required int surahNumber}) async {
+      {required int startingAyah, int? currentSurahNumber, required int surahNumber}) async {
     print("xx");
     currentAyah = AyahModel(
         numberInSurah: ayahNumber,
@@ -118,9 +109,9 @@ class ReadCubit extends Cubit<ReadStates> {
       await audioPlayer.setAudioSource(ayahAudioSource);
       audioPlayer.play();
       print("aaa");
-      hideLoading();
       print("Hide loading");
       emit(SetAyahSuccessStates());
+      hideLoading();
     } catch (e) {
       print(e.toString());
       hideLoading();
@@ -131,15 +122,14 @@ class ReadCubit extends Cubit<ReadStates> {
     }
   }
 
-  Stream<PositionData> get positionDataStream => Rx.combineLatest5<Duration,
-          Duration, Duration?, PlayerState, SequenceState?, PositionData>(
+  Stream<PositionData> get positionDataStream =>
+      Rx.combineLatest5<Duration, Duration, Duration?, PlayerState, SequenceState?, PositionData>(
         audioPlayer.positionStream,
         audioPlayer.bufferedPositionStream,
         audioPlayer.durationStream,
         audioPlayer.playerStateStream,
         audioPlayer.sequenceStateStream,
-        (position, bufferedPosition, duration, playerState, sequenceState) =>
-            PositionData(
+        (position, bufferedPosition, duration, playerState, sequenceState) => PositionData(
           position,
           bufferedPosition,
           duration ?? Duration.zero,
@@ -149,23 +139,18 @@ class ReadCubit extends Cubit<ReadStates> {
       );
 
   AyahModel? currentAyah;
-  void setCurrentAyah(
-      {required int ayahNumber,
-      required int surahNumber,
-      required context,
-      required int startingAyahNumber}) {
-    showLoading();
-    print("Showed loading");
-
+  void setCurrentAyah({
+    required int ayahNumber,
+    required int surahNumber,
+    required context,
+    required int startingAyahNumber,
+  }) {
     if (ListenCubit.get(context).audioPlayer.sequence != null) {
       ListenCubit.get(context).audioPlayer.stop();
-      print("audio player disposed");
     }
-    if(audioPlayer.playing) {
+    if (audioPlayer.playing) {
       removePlayer();
     }
-    print("xx");
-    print(ayahNumber);
     currentAyah = AyahModel(
       name: getVerse(surahNumber, ayahNumber),
       numberInSurah: ayahNumber,
@@ -173,9 +158,7 @@ class ReadCubit extends Cubit<ReadStates> {
       revelationType: getPlaceOfRevelation(surahNumber),
       surahNumber: surahNumber,
     );
-    print(currentAyah?.toJson().toString());
-    playAyah(ayahNumber,
-        startingAyah: startingAyahNumber, surahNumber: surahNumber);
+    playAyah(ayahNumber, startingAyah: startingAyahNumber, surahNumber: surahNumber);
   }
 
   void removeCurrentAyah() {
@@ -184,13 +167,15 @@ class ReadCubit extends Cubit<ReadStates> {
   }
 
   void pausePlayer() {
-      audioPlayer.pause();
+    audioPlayer.pause();
     emit(PausePlayerState());
   }
+
   void resumePlayer() {
-      audioPlayer.play();
+    audioPlayer.play();
     emit(ResumePlayerState());
   }
+
   void removePlayer() {
     currentAyah = null;
     audioPlayer.stop();

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'colors.dart';
 
 final ThemeData lightTheme = ThemeData(
+  useMaterial3: false, // 👈 This disables Material 3
   appBarTheme: const AppBarTheme(
     centerTitle: true,
     elevation: 0,
@@ -26,8 +26,7 @@ final ThemeData lightTheme = ThemeData(
   ),
   scaffoldBackgroundColor: AppColors.scaffoldBackground,
   primaryColor: AppColors.primaryColor,
-  colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor)
-      .copyWith(background: Colors.white),
+  colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor).copyWith(surface: Colors.white),
 );
 
 // final ThemeData darkTheme = ThemeData(

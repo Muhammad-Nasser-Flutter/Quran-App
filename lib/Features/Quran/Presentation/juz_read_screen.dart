@@ -1,15 +1,11 @@
-import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/ayah_widget_from_juz.dart';
 import 'package:Quran/Features/Quran/Presentation/widgets/quran_listen_top_widget.dart';
-import 'package:Quran/core/theming/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quran/quran.dart';
-import '../../../core/theming/assets.dart';
 import '../../../core/widgets/back.dart';
 import '../../../core/widgets/custom_texts.dart';
-import '../../../core/widgets/icon_widget.dart';
 import '../../../core/widgets/separator.dart';
 import '../Bloc/read_cubit.dart';
 import '../Bloc/read_states.dart';
@@ -43,11 +39,7 @@ class JuzReadScreen extends StatelessWidget {
           text: juzData['nameEng'],
           weight: FontWeight.w600,
         ),
-        actions: [
-          IconWidget(
-            iconAsset: Assets.searchIcon,
-          ),
-        ],
+
       ),
       body: BlocBuilder<ReadCubit, ReadStates>(
         builder: (context, state) {

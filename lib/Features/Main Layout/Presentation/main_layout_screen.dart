@@ -1,4 +1,3 @@
-import 'package:Quran/Features/Athan/bloc/athan_cubit.dart';
 import 'package:Quran/Features/Main%20Layout/Presentation/widgets/bottom_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

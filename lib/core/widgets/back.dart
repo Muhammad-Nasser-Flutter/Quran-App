@@ -15,7 +15,7 @@ class Back extends StatelessWidget {
       },
       child: const Icon(
         Icons.arrow_back_ios_rounded,
-        color: AppColors.defaultIconColor,
+        color: AppColors.primaryColor,
       ),
     );
   }

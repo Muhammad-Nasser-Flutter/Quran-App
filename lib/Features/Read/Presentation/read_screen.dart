@@ -1,7 +1,10 @@
 import 'package:Quran/Features/Read/Presentation/widgets/Read%20TabBar/read_tab_bar.dart';
 import 'package:Quran/Features/Read/Presentation/widgets/Read%20TabBar/read_tab_bar_view.dart';
 import 'package:Quran/core/cache_helper/cache_helper.dart';
-import 'package:Quran/core/cache_helper/cache_values.dart';
+import 'package:Quran/core/helpers/extensions.dart';
+import 'package:Quran/core/routing/routes.dart';
+import 'package:Quran/core/routing/routes_args.dart';
+import 'package:Quran/core/widgets/search_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,23 +23,16 @@ class ReadScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconWidget(
-          iconAsset: Assets.menuIcon,
-          onPressed: () {},
-          color: AppColors.primaryColor,
-          padding: 15,
-        ),
+        automaticallyImplyLeading: false,
         title: Text20(
           text: "Quran Reading",
           weight: FontWeight.w600,
         ),
         centerTitle: true,
         actions: [
-          IconWidget(
-            iconAsset: Assets.searchIcon,
-            onPressed: () {},
-            color: AppColors.primaryColor,
-            padding: 15,
+          SearchWidget(),
+          SizedBox(
+            width: 15.w,
           ),
         ],
       ),
@@ -60,8 +56,19 @@ class ReadScreen extends StatelessWidget {
                 height: 10.h,
               ),
               BlocBuilder<ReadCubit, ReadStates>(
-                builder:(context,state){
-                  return Center(
+                builder: (context, state) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (CacheHelper.getLastReadSurah() != null && CacheHelper.getLastReadAyah() != null) {
+                        context.pushNamed(
+                          Routes.surahReadScreen,
+                          arguments: SurahReadScreenArgs(
+                            scrollToAyahIndex: CacheHelper.getLastReadAyah()!,
+                            surahNumber: CacheHelper.getLastReadSurah()!,
+                          ),
+                        );
+                      }
+                    },
                     child: Stack(
                       children: [
                         Image.asset(
@@ -93,11 +100,8 @@ class ReadScreen extends StatelessWidget {
                                 height: 15.h,
                               ),
                               Text20(
-                                text: CacheHelper.getData(
-                                    key: CacheKeys.lastReadSurah) !=
-                                    null
-                                    ? getSurahName(CacheHelper.getData(
-                                    key: CacheKeys.lastReadSurah))
+                                text: CacheHelper.getLastReadSurah() != null
+                                    ? getSurahName(CacheHelper.getLastReadSurah()!)
                                     : "No Reads Yet",
                                 textColor: Colors.white,
                               ),
@@ -105,10 +109,8 @@ class ReadScreen extends StatelessWidget {
                                 height: 5.h,
                               ),
                               Text16(
-                                text: CacheHelper.getData(
-                                    key: CacheKeys.lastReadAyah)!=
-                                    null
-                                    ? "Ayah No. : ${CacheHelper.getData(key: CacheKeys.lastReadAyah)}"
+                                text: CacheHelper.getLastReadAyah() != null
+                                    ? "Ayah No. : ${CacheHelper.getLastReadAyah()}"
                                     : "",
                                 textColor: Colors.white,
                                 weight: FontWeight.w400,
@@ -119,7 +121,7 @@ class ReadScreen extends StatelessWidget {
                       ],
                     ),
                   );
-                } ,
+                },
               ),
               SizedBox(
                 height: 20.h,

@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
 
   final List<BoxShadow>? boxShadow;
   const CustomButton(
-      {Key? key,
+      {super.key,
       required this.text,
       this.onPressed,
       this.color,
@@ -41,8 +41,7 @@ class CustomButton extends StatelessWidget {
       this.enableShadow,
       this.isEnabled,
       this.boxShadow,
-      this.gradientColors})
-      : super(key: key);
+      this.gradientColors});
 
   @override
   Widget build(BuildContext context) {

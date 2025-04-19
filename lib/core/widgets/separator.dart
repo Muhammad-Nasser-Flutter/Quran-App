@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class Separator extends StatelessWidget {
-  double? margin ;
-  Separator({super.key,this.margin});
+  final double? margin ;
+  const Separator({super.key,this.margin});
 
   @override
   Widget build(BuildContext context) {

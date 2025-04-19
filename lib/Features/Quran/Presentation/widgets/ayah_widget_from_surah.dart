@@ -1,10 +1,10 @@
-import 'package:Quran/Features/Listen/models/position_data.dart';
 import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
 import 'package:Quran/Features/Quran/Bloc/read_states.dart';
 import 'package:Quran/core/cache_helper/cache_helper.dart';
 import 'package:Quran/core/functions/flutter_toast.dart';
 import 'package:Quran/core/theming/assets.dart';
 import 'package:Quran/core/theming/colors.dart';
+import 'package:Quran/core/utilies/easy_loading.dart';
 import 'package:Quran/core/widgets/custom_texts.dart';
 import 'package:Quran/core/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:quran/quran.dart';
 import 'package:share_plus/share_plus.dart';
-
 
 class AyahWidgetFromSurah extends StatelessWidget {
   const AyahWidgetFromSurah({super.key, required this.ayahNumber, required this.surahNumber, required this.isPlaying});
@@ -78,7 +77,9 @@ class AyahWidgetFromSurah extends StatelessWidget {
                             : Assets.playIcon
                         : Assets.playIcon,
                     padding: 10,
-                    onPressed: () async{
+                    onPressed: () async {
+                      showLoading();
+
                       final checker = InternetConnectionChecker.createInstance();
                       if (await checker.hasConnection) {
                         if (!isPlaying) {
@@ -134,6 +135,7 @@ class AyahWidgetFromSurah extends StatelessWidget {
                 text: getVerseTranslation(
                   surahNumber,
                   ayahNumber,
+                  // translation: Translation.enClearQuran
                 ),
                 weight: FontWeight.w500,
                 textColor: AppColors.primaryColor,

@@ -6,21 +6,21 @@ import '../theming/colors.dart';
 
 // ignore: must_be_immutable
 class Text12 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  TextDecoration? decoration;
-  Color? decorationColor;
-  double? decorationThickness;
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  final TextDecoration? decoration;
+  final Color? decorationColor;
+  final double? decorationThickness;
 
-  Text12({
+  const Text12({
     super.key,
     required this.text,
     this.textColor,
@@ -46,10 +46,10 @@ class Text12 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 12.sp,
         fontWeight: weight ?? FontWeight.w400,
-        color: textColor ??AppColors.smallTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.smallTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -63,22 +63,23 @@ class Text12 extends StatelessWidget {
     );
   }
 }
-class Text12Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  TextDecoration? decoration;
-  Color? decorationColor;
-  double? decorationThickness;
 
-  Text12Ar({
+class Text12Ar extends StatelessWidget {
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  final TextDecoration? decoration;
+  final Color? decorationColor;
+  final double? decorationThickness;
+
+  const Text12Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -104,10 +105,10 @@ class Text12Ar extends StatelessWidget {
       style: GoogleFonts.amiri(
         fontSize: size ?? 12.sp,
         fontWeight: weight ?? FontWeight.w400,
-        color: textColor ??AppColors.smallTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.smallTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -119,28 +120,26 @@ class Text12Ar extends StatelessWidget {
       overflow: overFlow,
       maxLines: maxLines,
       textDirection: TextDirection.rtl,
-
     );
   }
 }
-
 
 class Text14 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  TextDecoration? decoration;
-  Color? decorationColor;
-  double? decorationThickness;
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  final TextDecoration? decoration;
+  final Color? decorationColor;
+  final double? decorationThickness;
 
-  Text14({
+  const Text14({
     super.key,
     required this.text,
     this.textColor,
@@ -166,10 +165,10 @@ class Text14 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 14.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.smallTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.smallTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -183,22 +182,23 @@ class Text14 extends StatelessWidget {
     );
   }
 }
-class Text14Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  TextDecoration? decoration;
-  Color? decorationColor;
-  double? decorationThickness;
 
-  Text14Ar({
+class Text14Ar extends StatelessWidget {
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  final TextDecoration? decoration;
+  final Color? decorationColor;
+  final double? decorationThickness;
+
+  const Text14Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -224,10 +224,10 @@ class Text14Ar extends StatelessWidget {
       style: GoogleFonts.amiri(
         fontSize: size ?? 14.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.smallTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.smallTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -239,23 +239,22 @@ class Text14Ar extends StatelessWidget {
       overflow: overFlow,
       maxLines: maxLines,
       textDirection: TextDirection.rtl,
-
     );
   }
 }
 
 class Text16 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text16({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text16({
     super.key,
     required this.text,
     this.textColor,
@@ -279,10 +278,10 @@ class Text16 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 16.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.smallTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.smallTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -293,18 +292,19 @@ class Text16 extends StatelessWidget {
     );
   }
 }
+
 class Text16Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text16Ar({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text16Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -328,10 +328,10 @@ class Text16Ar extends StatelessWidget {
       style: GoogleFonts.amiri(
         fontSize: size ?? 16.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.smallTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.smallTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -340,23 +340,22 @@ class Text16Ar extends StatelessWidget {
       overflow: overFlow,
       maxLines: maxLines,
       textDirection: TextDirection.rtl,
-
     );
   }
 }
 
 class Text18 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text18({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text18({
     super.key,
     required this.text,
     this.textColor,
@@ -379,10 +378,10 @@ class Text18 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 18.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -393,18 +392,19 @@ class Text18 extends StatelessWidget {
     );
   }
 }
+
 class Text18Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text18Ar({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text18Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -425,13 +425,12 @@ class Text18Ar extends StatelessWidget {
     return Text(
       text,
       style: GoogleFonts.amiri(
-
         fontSize: size ?? 18.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -445,17 +444,17 @@ class Text18Ar extends StatelessWidget {
 }
 
 class Text20 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text20({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text20({
     super.key,
     required this.text,
     this.textColor,
@@ -478,10 +477,7 @@ class Text20 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 20.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??
-            (Theme.of(context).brightness == Brightness.light
-                ? AppColors.bigTextColor
-                : Colors.white),
+        color: textColor ?? (Theme.of(context).brightness == Brightness.light ? AppColors.bigTextColor : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -492,18 +488,19 @@ class Text20 extends StatelessWidget {
     );
   }
 }
+
 class Text20Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text20Ar({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text20Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -526,10 +523,7 @@ class Text20Ar extends StatelessWidget {
       style: GoogleFonts.amiri(
         fontSize: size ?? 20.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??
-            (Theme.of(context).brightness == Brightness.light
-                ? AppColors.bigTextColor
-                : Colors.white),
+        color: textColor ?? (Theme.of(context).brightness == Brightness.light ? AppColors.bigTextColor : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -538,23 +532,22 @@ class Text20Ar extends StatelessWidget {
       overflow: overFlow,
       maxLines: maxLines,
       textDirection: TextDirection.rtl,
-
     );
   }
 }
 
 class Text22 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text22({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text22({
     super.key,
     required this.text,
     this.textColor,
@@ -577,10 +570,10 @@ class Text22 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 22.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -591,18 +584,19 @@ class Text22 extends StatelessWidget {
     );
   }
 }
+
 class Text22Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text22Ar({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text22Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -625,10 +619,10 @@ class Text22Ar extends StatelessWidget {
       style: GoogleFonts.amiri(
         fontSize: size ?? 22.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -637,23 +631,22 @@ class Text22Ar extends StatelessWidget {
       overflow: overFlow,
       maxLines: maxLines,
       textDirection: TextDirection.rtl,
-
     );
   }
 }
 
 class Text24 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text24({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text24({
     super.key,
     required this.text,
     this.textColor,
@@ -676,10 +669,10 @@ class Text24 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 24.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -690,18 +683,19 @@ class Text24 extends StatelessWidget {
     );
   }
 }
+
 class Text24Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text24Ar({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text24Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -724,10 +718,10 @@ class Text24Ar extends StatelessWidget {
       style: GoogleFonts.amiri(
         fontSize: size ?? 24.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -736,23 +730,22 @@ class Text24Ar extends StatelessWidget {
       overflow: overFlow,
       maxLines: maxLines,
       textDirection: TextDirection.rtl,
-
     );
   }
 }
 
 class Text26 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text26({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text26({
     super.key,
     required this.text,
     this.textColor,
@@ -775,10 +768,10 @@ class Text26 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 26.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -789,18 +782,19 @@ class Text26 extends StatelessWidget {
     );
   }
 }
+
 class Text26Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text26Ar({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text26Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -823,10 +817,10 @@ class Text26Ar extends StatelessWidget {
       style: GoogleFonts.amiri(
         fontSize: size ?? 26.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -835,23 +829,22 @@ class Text26Ar extends StatelessWidget {
       overflow: overFlow,
       maxLines: maxLines,
       textDirection: TextDirection.rtl,
-
     );
   }
 }
 
 class Text28 extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text28({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text28({
     super.key,
     required this.text,
     this.textColor,
@@ -874,10 +867,10 @@ class Text28 extends StatelessWidget {
       style: GoogleFonts.poppins(
         fontSize: size ?? 28.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -888,18 +881,19 @@ class Text28 extends StatelessWidget {
     );
   }
 }
+
 class Text28Ar extends StatelessWidget {
-  int? maxLines;
-  double? size;
-  Color? textColor;
-  double? height;
-  double? spacing;
-  String? family;
-  TextOverflow? overFlow;
-  TextAlign? alignment;
-  FontWeight? weight;
-  TextDecorationStyle? decorationStyle;
-  Text28Ar({
+  final int? maxLines;
+  final double? size;
+  final Color? textColor;
+  final double? height;
+  final double? spacing;
+  final String? family;
+  final TextOverflow? overFlow;
+  final TextAlign? alignment;
+  final FontWeight? weight;
+  final TextDecorationStyle? decorationStyle;
+  const Text28Ar({
     super.key,
     required this.text,
     this.textColor,
@@ -922,10 +916,10 @@ class Text28Ar extends StatelessWidget {
       style: GoogleFonts.amiri(
         fontSize: size ?? 28.sp,
         fontWeight: weight ?? FontWeight.w500,
-        color: textColor ??AppColors.bigTextColor,
-            // (Theme.of(context).brightness == Brightness.light
-            //     ? Colors.black
-            //     : Colors.white),
+        color: textColor ?? AppColors.bigTextColor,
+        // (Theme.of(context).brightness == Brightness.light
+        //     ? Colors.black
+        //     : Colors.white),
         height: height,
         letterSpacing: spacing,
         decorationStyle: decorationStyle,
@@ -934,7 +928,6 @@ class Text28Ar extends StatelessWidget {
       overflow: overFlow,
       maxLines: maxLines,
       textDirection: TextDirection.rtl,
-
     );
   }
 }

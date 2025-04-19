@@ -4,5 +4,5 @@ class Routes {
   static const String surahReadScreen = '/surahReadScreen';
   static const String juzReadScreen = '/juzReadScreen';
   static const String pageReadScreen = '/pageReadScreen';
-
+  static const String searchScreen = '/search_screen';
 }

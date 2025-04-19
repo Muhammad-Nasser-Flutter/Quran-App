@@ -117,6 +117,6 @@ class ListenCubit extends Cubit<ListenStates> {
     if (audioPlayer.sequence==null) {
       return 0;
     }
-    return int.parse(audioPlayer.sequenceState?.currentSource?.tag?.id) ?? 0;
+    return int.parse(audioPlayer.sequenceState?.currentSource?.tag?.id);
   }
 }

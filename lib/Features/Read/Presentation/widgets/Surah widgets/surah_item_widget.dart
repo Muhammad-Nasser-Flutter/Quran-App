@@ -1,18 +1,13 @@
 import 'package:Quran/Features/Listen/Bloc/listen_cubit.dart';
 import 'package:Quran/Features/Listen/Bloc/listen_states.dart';
 import 'package:Quran/Features/Listen/models/position_data.dart';
-import 'package:Quran/Features/Quran/Bloc/read_cubit.dart';
-import 'package:Quran/Features/Quran/Bloc/read_states.dart';
-import 'package:Quran/Features/Quran/models/surah_model.dart';
-import 'package:Quran/core/cache_helper/cache_helper.dart';
-import 'package:Quran/core/cache_helper/cache_values.dart';
 import 'package:Quran/core/helpers/extensions.dart';
+import 'package:Quran/core/routing/routes_args.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quran/quran.dart';
-import 'package:quran/quran_text.dart';
 import '../../../../../core/routing/routes.dart';
 import '../../../../../core/theming/assets.dart';
 import '../../../../../core/theming/colors.dart';
@@ -38,8 +33,7 @@ class SurahItemWidget extends StatelessWidget {
         return InkWell(
           onTap: () {
             if (fromRead) {
-
-              context.pushNamed(Routes.surahReadScreen, arguments: index + 1);
+              context.pushNamed(Routes.surahReadScreen, arguments: SurahReadScreenArgs(surahNumber: index + 1));
               // go to the surah's page where u can read the surah from the quran
             } else {
               // print(quranCubit.surahs[index]);
@@ -84,13 +78,11 @@ class SurahItemWidget extends StatelessWidget {
                           SizedBox(
                             width: 15.w,
                           ),
-                          if (listenCubit.audioPlayer.sequence != null&&!fromRead)
+                          if (listenCubit.audioPlayer.sequence != null && !fromRead)
                             StreamBuilder<PositionData>(
                                 stream: listenCubit.positionDataStream,
                                 builder: (context, snapshot) {
-                                  if (snapshot.data?.sequenceState
-                                          ?.currentSource?.tag?.id !=
-                                      (index + 1).toString()) {
+                                  if (snapshot.data?.sequenceState?.currentSource?.tag?.id != (index + 1).toString()) {
                                     return const SizedBox();
                                   } else {
                                     return Text14(
@@ -103,8 +95,7 @@ class SurahItemWidget extends StatelessWidget {
                         ],
                       ),
                       Text12(
-                        text:
-                            "${getPlaceOfRevelation(index + 1)} - ${getVerseCount(index + 1)} VERSES",
+                        text: "${getPlaceOfRevelation(index + 1)} - ${getVerseCount(index + 1)} VERSES",
                       ),
                     ],
                   ),
